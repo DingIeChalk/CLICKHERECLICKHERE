@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- 🎨 Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -17,11 +19,27 @@
       user-select: none;
       -webkit-user-drag: none;
     }
+
+    /* 🟠 CLICK ME Text */
+    #click-hint {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Carter One', cursive;
+      font-size: 32px;
+      color: #FF9900;
+      z-index: 9999;
+      user-select: none;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🎵 Background Audio -->
+  <!-- 🟠 CLICK ME Text -->
+  <div id="click-hint">CLICK ME</div>
+
+  <!-- 🎧 Background Audio -->
   <audio id="bgm" autoplay loop>
     <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -45,6 +63,8 @@
 
       img.addEventListener('click', (e) => {
         e.preventDefault();
+        const hint = document.getElementById('click-hint');
+        if (hint) hint.style.display = 'none'; // 💥 hide "CLICK ME"
         createLogo(logo.x + 20, logo.y + 20);
       });
     }
@@ -67,10 +87,10 @@
     createLogo();
     animate();
 
-    // 🎵 Trigger music playback on first click (for autoplay restrictions)
+    // 🎵 Trigger music on first click (for autoplay restrictions)
     document.addEventListener('click', function playMusicOnce() {
       const bgm = document.getElementById('bgm');
-      bgm.volume = 0.5;
+      bgm.volume = 0.25; // 🔉 set volume to 50%
       if (bgm.paused) {
         bgm.play();
       }
