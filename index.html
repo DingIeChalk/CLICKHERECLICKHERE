@@ -7,7 +7,7 @@
       overflow: hidden;
       background: black;
     }
-    img.dvd-logo {
+    img.mrhuxbouncy {
       position: absolute;
       width: 100px;
       height: auto;
@@ -16,14 +16,13 @@
   </style>
 </head>
 <body>
-  <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mrhux.png">
 
   <script>
     const logos = [];
 
     function createLogo(x = 100, y = 100) {
       const img = document.createElement('img');
-      img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mrhux.png";
+      img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png"; // ✅ proper raw link
       img.className = "mrhuxbouncy";
       document.body.appendChild(img);
 
@@ -54,5 +53,6 @@
     createLogo();
     animate();
   </script>
+
 </body>
 </html>
