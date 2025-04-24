@@ -6,12 +6,15 @@
       margin: 0;
       overflow: hidden;
       background: black;
+      user-select: none; /* 🔒 prevents text/image selection */
     }
     img.mrhuxbouncy {
       position: absolute;
       width: 100px;
       height: auto;
       cursor: pointer;
+      user-select: none;         /* 🔒 prevent image highlighting */
+      -webkit-user-drag: none;   /* 🔒 prevent dragging on Safari */
     }
   </style>
 </head>
@@ -34,7 +37,7 @@
       logos.push(logo);
 
       img.addEventListener('click', (e) => {
-        e.preventDefault(); // 🔧 stops browser from selecting image
+        e.preventDefault(); // 🔧 stops browser from selecting or dragging image
         createLogo(logo.x + 20, logo.y + 20);
       });
     }
