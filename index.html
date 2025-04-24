@@ -22,8 +22,9 @@
 
     function createLogo(x = 100, y = 100) {
       const img = document.createElement('img');
-      img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png"; // ✅ proper raw link
+      img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
       img.className = "mrhuxbouncy";
+      img.draggable = false; // 🔧 prevents dragging
       document.body.appendChild(img);
 
       const dx = Math.random() < 0.5 ? 2 : -2;
@@ -32,7 +33,10 @@
       const logo = { el: img, x, y, dx, dy };
       logos.push(logo);
 
-      img.addEventListener('click', () => createLogo(logo.x + 20, logo.y + 20));
+      img.addEventListener('click', (e) => {
+        e.preventDefault(); // 🔧 stops browser from selecting image
+        createLogo(logo.x + 20, logo.y + 20);
+      });
     }
 
     function animate() {
