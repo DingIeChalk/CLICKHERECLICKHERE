@@ -6,19 +6,26 @@
       margin: 0;
       overflow: hidden;
       background: black;
-      user-select: none; /* 🔒 prevents text/image selection */
+      user-select: none;
     }
+
     img.mrhuxbouncy {
       position: absolute;
       width: 100px;
       height: auto;
       cursor: pointer;
-      user-select: none;         /* 🔒 prevent image highlighting */
-      -webkit-user-drag: none;   /* 🔒 prevent dragging on Safari */
+      user-select: none;
+      -webkit-user-drag: none;
     }
   </style>
 </head>
 <body>
+
+  <!-- 🎵 Background Audio -->
+  <audio id="bgm" autoplay loop>
+    <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
   <script>
     const logos = [];
@@ -27,7 +34,7 @@
       const img = document.createElement('img');
       img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
       img.className = "mrhuxbouncy";
-      img.draggable = false; // 🔧 prevents dragging
+      img.draggable = false;
       document.body.appendChild(img);
 
       const dx = Math.random() < 0.5 ? 2 : -2;
@@ -37,7 +44,7 @@
       logos.push(logo);
 
       img.addEventListener('click', (e) => {
-        e.preventDefault(); // 🔧 stops browser from selecting or dragging image
+        e.preventDefault();
         createLogo(logo.x + 20, logo.y + 20);
       });
     }
@@ -59,6 +66,15 @@
 
     createLogo();
     animate();
+
+    // 🎵 Trigger music playback on first click (for autoplay restrictions)
+    document.addEventListener('click', function playMusicOnce() {
+      const bgm = document.getElementById('bgm');
+      if (bgm.paused) {
+        bgm.play();
+      }
+      document.removeEventListener('click', playMusicOnce);
+    });
   </script>
 
 </body>
