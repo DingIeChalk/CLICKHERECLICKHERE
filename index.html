@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+    img.dvd-logo {
+      position: absolute;
+      width: 100px;
+      height: auto;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/DVD_logo.svg/320px-DVD_logo.svg.png" class="dvd-logo">
+
+  <script>
+    const logos = [];
+
+    function createLogo(x = 100, y = 100) {
+      const img = document.createElement('img');
+      img.src = "";
+      img.className = "bouncer";
+      document.body.appendChild(img);
+
+      const dx = Math.random() < 0.5 ? 2 : -2;
+      const dy = Math.random() < 0.5 ? 2 : -2;
+
+      const logo = { el: img, x, y, dx, dy };
+      logos.push(logo);
+
+      img.addEventListener('click', () => createLogo(logo.x + 20, logo.y + 20));
+    }
+
+    function animate() {
+      logos.forEach(logo => {
+        const el = logo.el;
+        logo.x += logo.dx;
+        logo.y += logo.dy;
+
+        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
+        if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
+
+        el.style.left = logo.x + "px";
+        el.style.top = logo.y + "px";
+      });
+      requestAnimationFrame(animate);
+    }
+
+    createLogo();
+    animate();
+  </script>
+</body>
+</html>
