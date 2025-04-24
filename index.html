@@ -44,19 +44,19 @@
     @keyframes fall {
       0% {
         transform: translateY(0) rotate(var(--start-angle));
-        opacity: 1;
       }
       100% {
         transform: translateY(120vh) rotate(var(--end-angle));
-        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
 
+  <!-- Floating "CLICK HERE" -->
   <div id="click-hint">CLICK HERE</div>
 
+  <!-- Background Music -->
   <audio id="bgm" autoplay loop>
     <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -75,7 +75,7 @@
       "YOU CAN’T AFFORD NOT TO!",
       "TERMS & CONDITIONS APPLY*",
       "DEALS THAT DEFY LOGIC!",
-      "EVERY CLICK GUARANTEED!"
+      "EVERY CLICK GUARANTEED!",
       "CHECK BACK OFTEN!"
     ];
 
@@ -108,7 +108,7 @@
 
       function loop() {
         spawnFallingText();
-        const nextTime = Math.random() * 5000 + 3000; // between 3–8 seconds
+        const nextTime = Math.random() * 5000 + 3000; // 3-8 seconds
         setTimeout(loop, nextTime);
       }
 
