@@ -98,22 +98,22 @@
       text.style.setProperty('--end-angle', endAngle);
 
       document.body.appendChild(text);
-
       setTimeout(() => text.remove(), 5000);
     }
 
     function startFallingTextLoop() {
-  if (fallingTextStarted) return;
-  fallingTextStarted = true;
+      if (fallingTextStarted) return;
+      fallingTextStarted = true;
 
-  function loop() {
-    spawnFallingText();
-    const nextTime = Math.random() * 8000 + 2000; // ⏱ Random between 2-10 seconds
-    setTimeout(loop, nextTime);
-  }
+      function loop() {
+        spawnFallingText();
+        const nextTime = Math.random() * 8000 + 2000;
+        setTimeout(loop, nextTime);
+      }
 
-  loop();
-}
+      loop();
+    }
+
     function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
       const img = document.createElement('img');
       img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
@@ -171,7 +171,23 @@
       }
       document.removeEventListener('click', playMusicOnce);
     });
-  </script>
 
+    // 🔐 Secret phrase trigger (MRHUX)
+    let typedInput = '';
+    const secretPhrase = 'MRHUX';
+    const redirectURL = 'https://docs.google.com/document/d/18NIecDFEgBrAGSwHVMKac1ioD2QDntqn_AlJJV3SeBQ/edit?usp=sharing';
+
+    document.addEventListener('keydown', (event) => {
+      typedInput += event.key.toUpperCase();
+      if (typedInput.length > secretPhrase.length) {
+        typedInput = typedInput.slice(-secretPhrase.length);
+      }
+      if (typedInput === secretPhrase) {
+        window.open(redirectURL, '_blank');
+        typedInput = ''; // optional: clear it after redirect
+      }
+    });
+
+  </script>
 </body>
 </html>
