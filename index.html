@@ -103,18 +103,17 @@
     }
 
     function startFallingTextLoop() {
-      if (fallingTextStarted) return;
-      fallingTextStarted = true;
+  if (fallingTextStarted) return;
+  fallingTextStarted = true;
 
-      function loop() {
-        spawnFallingText();
-        const nextTime = Math.random() * 5000 + 3000; // 3-8 seconds
-        setTimeout(loop, nextTime);
-      }
+  function loop() {
+    spawnFallingText();
+    const nextTime = Math.random() * 8000 + 2000; // ⏱ Random between 2-10 seconds
+    setTimeout(loop, nextTime);
+  }
 
-      loop();
-    }
-
+  loop();
+}
     function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
       const img = document.createElement('img');
       img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
