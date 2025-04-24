@@ -35,10 +35,10 @@
 </head>
 <body>
 
-  <!-- 🟠 CLICK HERE Text (will follow first Mr. Hux) -->
+  <!-- 🟠 Floating CLICK HERE Label -->
   <div id="click-hint">CLICK HERE</div>
 
-  <!-- 🎧 Background Audio -->
+  <!-- 🎧 Background Music -->
   <audio id="bgm" autoplay loop>
     <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -55,12 +55,10 @@
       img.draggable = false;
       document.body.appendChild(img);
 
-      // 🔁 Ensure new direction isn't the same as the previous
       let dx, dy;
       do {
         dx = Math.random() < 0.5 ? 2 : -2;
       } while (dx === avoidDx);
-
       do {
         dy = Math.random() < 0.5 ? 2 : -2;
       } while (dy === avoidDy);
@@ -68,27 +66,15 @@
       const logo = { el: img, x, y, dx, dy };
       logos.push(logo);
 
-      // 🎯 Special behavior for first one (attach hint)
-      if (logos.length === 1) {
-        const trackHint = () => {
-          if (hint) {
-            hint.style.left = (logo.x + img.width / 2) + "px";
-            hint.style.top = logo.y + "px";
-          }
-          requestAnimationFrame(trackHint);
-        };
-        trackHint();
-      }
-
       img.addEventListener('click', (e) => {
         e.preventDefault();
-        if (hint) hint.style.display = 'none'; // 💥 hide on first click
-        createLogo(logo.x + 20, logo.y + 20, dx, dy); // 🧠 Pass current direction to avoid stacking
+        if (hint) hint.style.display = 'none'; // 🔥 hide hint on first click
+        createLogo(logo.x + 20, logo.y + 20, dx, dy);
       });
     }
 
     function animate() {
-      logos.forEach(logo => {
+      logos.forEach((logo, index) => {
         const el = logo.el;
         logo.x += logo.dx;
         logo.y += logo.dy;
@@ -98,6 +84,12 @@
 
         el.style.left = logo.x + "px";
         el.style.top = logo.y + "px";
+
+        // 🟠 Update hint position to follow the FIRST Mr. Hux
+        if (index === 0 && hint && hint.style.display !== 'none') {
+          hint.style.left = (logo.x + el.width / 2) + "px";
+          hint.style.top = logo.y + "px";
+        }
       });
       requestAnimationFrame(animate);
     }
@@ -105,7 +97,7 @@
     createLogo();
     animate();
 
-    // 🎵 Trigger music on first interaction
+    // 🎵 Kick off music after user interacts (autoplay workaround)
     document.addEventListener('click', function playMusicOnce() {
       const bgm = document.getElementById('bgm');
       bgm.volume = 0.25;
