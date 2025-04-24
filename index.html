@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- 🎨 Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
   <style>
     body {
@@ -20,7 +19,6 @@
       -webkit-user-drag: none;
     }
 
-    /* 🟠 CLICK HERE Label */
     #click-hint {
       position: absolute;
       font-family: 'Carter One', cursive;
@@ -35,7 +33,7 @@
 </head>
 <body>
 
-  <!-- 🟠 Floating CLICK HERE Label -->
+  <!-- 🟠 Floating "CLICK HERE" -->
   <div id="click-hint">CLICK HERE</div>
 
   <!-- 🎧 Background Music -->
@@ -44,35 +42,53 @@
     Your browser does not support the audio element.
   </audio>
 
+  <!-- 🔊 Click Sound (stackable, cloned) -->
+  <template id="click-sfx-template">
+    <audio>
+      <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Click.mp3" type="audio/mpeg">
+    </audio>
+  </template>
+
   <script>
     const logos = [];
     const hint = document.getElementById('click-hint');
 
-   function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
-  const img = document.createElement('img');
-  img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
-  img.className = "mrhuxbouncy";
-  img.draggable = false;
-  document.body.appendChild(img);
+    function playClickSound() {
+      const template = document.getElementById('click-sfx-template');
+      const clone = template.content.cloneNode(true);
+      const audio = clone.querySelector('audio');
+      audio.volume = 0.3; // low enough not to overpower
+      document.body.appendChild(audio);
+      audio.play();
+      audio.addEventListener('ended', () => {
+        audio.remove();
+      });
+    }
 
-  // 🔁 Create randomized movement direction (excluding parent's)
-  const possibleSpeeds = [-3, -2, 2, 3];
+    function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
+      const img = document.createElement('img');
+      img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
+      img.className = "mrhuxbouncy";
+      img.draggable = false;
+      document.body.appendChild(img);
 
-  const dxOptions = possibleSpeeds.filter(v => v !== avoidDx);
-  const dyOptions = possibleSpeeds.filter(v => v !== avoidDy);
+      const possibleSpeeds = [-3, -2, 2, 3];
+      const dxOptions = possibleSpeeds.filter(v => v !== avoidDx);
+      const dyOptions = possibleSpeeds.filter(v => v !== avoidDy);
 
-  const dx = dxOptions[Math.floor(Math.random() * dxOptions.length)];
-  const dy = dyOptions[Math.floor(Math.random() * dyOptions.length)];
+      const dx = dxOptions[Math.floor(Math.random() * dxOptions.length)];
+      const dy = dyOptions[Math.floor(Math.random() * dyOptions.length)];
 
-  const logo = { el: img, x, y, dx, dy };
-  logos.push(logo);
+      const logo = { el: img, x, y, dx, dy };
+      logos.push(logo);
 
-  img.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (hint) hint.style.display = 'none'; // 💥 hide "CLICK HERE"
-    createLogo(logo.x + 20, logo.y + 20, dx, dy); // 🧠 pass current dx/dy to avoid repeating it
-  });
-}
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        playClickSound(); // 🔊 play on click
+        if (hint) hint.style.display = 'none'; // 💥 hide "CLICK HERE"
+        createLogo(logo.x + 20, logo.y + 20, dx, dy); // spawn another, avoiding same direction
+      });
+    }
 
     function animate() {
       logos.forEach((logo, index) => {
@@ -86,7 +102,7 @@
         el.style.left = logo.x + "px";
         el.style.top = logo.y + "px";
 
-        // 🟠 Update hint position to follow the FIRST Mr. Hux
+        // Make the "CLICK HERE" float above the first Mr. Hux
         if (index === 0 && hint && hint.style.display !== 'none') {
           hint.style.left = (logo.x + el.width / 2) + "px";
           hint.style.top = logo.y + "px";
@@ -98,7 +114,6 @@
     createLogo();
     animate();
 
-    // 🎵 Kick off music after user interacts (autoplay workaround)
     document.addEventListener('click', function playMusicOnce() {
       const bgm = document.getElementById('bgm');
       bgm.volume = 0.25;
