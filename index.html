@@ -29,14 +29,34 @@
       pointer-events: none;
       transform: translate(-50%, -100%);
     }
+
+    .falling-text {
+      position: fixed;
+      font-family: 'Carter One', cursive;
+      font-size: 24px;
+      color: #FF9900;
+      pointer-events: none;
+      z-index: 9998;
+      transform-origin: center;
+      animation: fall 5s linear forwards;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(var(--start-angle));
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(120vh) rotate(var(--end-angle));
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🟠 Floating "CLICK HERE" -->
   <div id="click-hint">CLICK HERE</div>
 
-  <!-- 🎧 Background Music -->
   <audio id="bgm" autoplay loop>
     <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -45,11 +65,53 @@
   <script>
     const logos = [];
     const hint = document.getElementById('click-hint');
+    let fallingTextStarted = false;
+
+    const phrases = [
+      "BUY NOW!!",
+      "THE BEST DEALS!!",
+      "LIMITED TIME OFFER!",
+      "CLICK WHILE YOU CAN!",
+      "YOU CAN’T AFFORD NOT TO!",
+      "TERMS & CONDITIONS APPLY*",
+      "DEALS THAT DEFY LOGIC!",
+      "EVERY CLICK GUARANTEED!"
+    ];
 
     function playClickSound() {
       const click = new Audio("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Click.mp3");
       click.volume = 0.3;
       click.play();
+    }
+
+    function spawnFallingText() {
+      const text = document.createElement('div');
+      text.className = 'falling-text';
+      text.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+
+      const startAngle = (Math.random() * 20 - 10) + "deg";
+      const endAngle = (Math.random() * 20 - 10) + "deg";
+
+      text.style.left = Math.floor(Math.random() * 100) + "vw";
+      text.style.setProperty('--start-angle', startAngle);
+      text.style.setProperty('--end-angle', endAngle);
+
+      document.body.appendChild(text);
+
+      setTimeout(() => text.remove(), 5000);
+    }
+
+    function startFallingTextLoop() {
+      if (fallingTextStarted) return;
+      fallingTextStarted = true;
+
+      function loop() {
+        spawnFallingText();
+        const nextTime = Math.random() * 5000 + 3000; // between 3–8 seconds
+        setTimeout(loop, nextTime);
+      }
+
+      loop();
     }
 
     function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
@@ -71,9 +133,10 @@
 
       img.addEventListener('click', (e) => {
         e.preventDefault();
-        playClickSound(); // 🔊 Play click on every spawn
-        if (hint) hint.style.display = 'none'; // 🧨 Hide the floating hint
-        createLogo(logo.x + 20, logo.y + 20, dx, dy); // 🎯 Spawn with new direction
+        playClickSound();
+        if (hint) hint.style.display = 'none';
+        startFallingTextLoop();
+        createLogo(logo.x + 20, logo.y + 20, dx, dy);
       });
     }
 
@@ -89,7 +152,6 @@
         el.style.left = logo.x + "px";
         el.style.top = logo.y + "px";
 
-        // 🟠 Make "CLICK HERE" follow the first Hux
         if (index === 0 && hint && hint.style.display !== 'none') {
           hint.style.left = (logo.x + el.width / 2) + "px";
           hint.style.top = logo.y + "px";
@@ -101,7 +163,6 @@
     createLogo();
     animate();
 
-    // 🎵 Start music on first interaction
     document.addEventListener('click', function playMusicOnce() {
       const bgm = document.getElementById('bgm');
       bgm.volume = 0.25;
