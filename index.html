@@ -190,19 +190,32 @@
       }
     });
   </script>
-  <!-- START: BUILD TIMESTAMP (BUILD-TIME) -->
-<div id="build-timestamp" style="
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  font-size: 12px;
-  font-family: monospace;
-  color: rgba(255,255,255,0.3);
-  z-index: 9999;
-  pointer-events: none;
-">
-  Last build: {{ site.time | date: "%a, %b %-d, %Y %I:%M %p" }}
+<!-- START: BUILD TIMESTAMP (BUILD-TIME, LOCALIZED) -->
+<div id="build-timestamp" 
+     data-build-time="{{ site.time | date: '%Y-%m-%dT%H:%M:%SZ' }}" 
+     style="
+       position: fixed;
+       bottom: 10px;
+       right: 10px;
+       font-size: 12px;
+       font-family: monospace;
+       color: rgba(255,255,255,0.3);
+       z-index: 9999;
+       pointer-events: none;
+     ">
+  Last build: <span id="timestamp"></span>
 </div>
-<!-- END: BUILD TIMESTAMP (BUILD-TIME) -->
+<script>
+  // Parse the build-time (UTC) from our data attribute
+  const el = document.getElementById('build-timestamp');
+  const raw = el.getAttribute('data-build-time');            // e.g. "2025-04-25T06:19:00Z"
+  const dt  = new Date(raw);
+  // Format in the user's locale (America/Chicago, et al.)
+  document.getElementById('timestamp').textContent = dt.toLocaleString('en-US', {
+    weekday: 'short', year: 'numeric', month: 'short',
+    day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+</script>
+<!-- END: BUILD TIMESTAMP (BUILD-TIME, LOCALIZED) -->
 </body>
 </html>
