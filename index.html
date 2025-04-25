@@ -22,10 +22,6 @@
       cursor: pointer;
       user-select: none;
       -webkit-user-drag: none;
-
-      /* ↑ existing styles ↑ */
-
-      /* ↓ mobile tap enhancements ↓ */
       padding: 12px;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
@@ -75,6 +71,13 @@
     const hint = document.getElementById('click-hint');
     let fallingTextStarted = false;
 
+    // Jumpscare controls
+    let duplicateCount = 0;
+    let jumpTimer = null;
+    const maxDuplicates = 42;
+    const waitForJumpscare = 3000;
+    const jumpScareURL = 'https://huxmark.com/finale.html';
+
     // Phrases for falling text
     const phrases = [
       "BUY NOW!!",
@@ -102,7 +105,7 @@
       text.textContent = phrases[Math.floor(Math.random() * phrases.length)];
       text.style.left = Math.random() * 100 + "vw";
       text.style.setProperty('--start-angle', (Math.random() * 20 - 10) + "deg");
-      text.style.setProperty('--end-angle',   (Math.random() * 20 - 10) + "deg");
+      text.style.setProperty('--end-angle', (Math.random() * 20 - 10) + "deg");
       document.body.appendChild(text);
       setTimeout(() => text.remove(), 5000);
     }
@@ -117,7 +120,7 @@
       })();
     }
 
-    // Unified createLogo with click + touch handling
+    // Unified createLogo with click/touch and 42-stop logic
     function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
       const img = document.createElement('img');
       img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
@@ -138,7 +141,16 @@
         playClickSound();
         hint.style.display = 'none';
         startFallingTextLoop();
+
+        duplicateCount++;
         createLogo(logo.x + 20, logo.y + 20, dx, dy);
+
+        if (duplicateCount === maxDuplicates) {
+          jumpTimer = setTimeout(triggerJumpScare, waitForJumpscare);
+        } else if (duplicateCount > maxDuplicates && jumpTimer) {
+          clearTimeout(jumpTimer);
+          jumpTimer = null;
+        }
       };
 
       img.addEventListener('click', handleTap);
@@ -151,24 +163,45 @@
         const el = logo.el;
         logo.x += logo.dx;
         logo.y += logo.dy;
-        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth)  logo.dx *= -1;
+        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
         if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
         el.style.left = logo.x + "px";
-        el.style.top  = logo.y + "px";
-        // Keep the hint above the first logo
+        el.style.top = logo.y + "px";
         if (i === 0 && hint.style.display !== 'none') {
-          hint.style.left = (logo.x + el.width/2) + "px";
-          hint.style.top  = logo.y + "px";
+          hint.style.left = (logo.x + el.width / 2) + "px";
+          hint.style.top = logo.y + "px";
         }
       });
       requestAnimationFrame(animate);
+    }
+
+    // Trigger jumpscare
+    function triggerJumpScare() {
+      logos.forEach(l => l.el.remove());
+      logos.length = 0;
+
+      const giant = document.createElement('img');
+      giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
+      Object.assign(giant.style, {
+        position: 'absolute',
+        width: '80vw',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 10000
+      });
+      document.body.appendChild(giant);
+
+      setTimeout(() => {
+        window.location.href = jumpScareURL;
+      }, 3000);
     }
 
     // Start
     createLogo();
     animate();
 
-    // Play BGM only after first user tap/click
+    // Play BGM after first tap
     document.addEventListener('click', function playMusicOnce() {
       const bgm = document.getElementById('bgm');
       bgm.volume = 0.25;
@@ -190,7 +223,8 @@
       }
     });
   </script>
-<!-- START: BUILD TIMESTAMP (BUILD-TIME, LOCALIZED) -->
+
+  <!-- START: BUILD TIMESTAMP (BUILD-TIME, LOCALIZED) -->
 <div id="build-timestamp" 
      data-build-time="{{ site.time | date: '%Y-%m-%dT%H:%M:%SZ' }}" 
      style="
@@ -206,11 +240,9 @@
   Last build: <span id="timestamp"></span>
 </div>
 <script>
-  // Parse the build-time (UTC) from our data attribute
-  const el = document.getElementById('build-timestamp');
-  const raw = el.getAttribute('data-build-time');            // e.g. "2025-04-25T06:19:00Z"
+  const elTS = document.getElementById('build-timestamp');
+  const raw = elTS.getAttribute('data-build-time');
   const dt  = new Date(raw);
-  // Format in the user's locale (America/Chicago, et al.)
   document.getElementById('timestamp').textContent = dt.toLocaleString('en-US', {
     weekday: 'short', year: 'numeric', month: 'short',
     day: 'numeric', hour: '2-digit', minute: '2-digit'
