@@ -142,8 +142,6 @@
         hint.style.display = 'none';
         startFallingTextLoop();
 
-        // TEST MODE: single click jumps to 42
-        if (duplicateCount === 0) duplicateCount = maxDuplicates - 1;
         duplicateCount++;
         createLogo(logo.x + 20, logo.y + 20, dx, dy);
 
@@ -247,7 +245,7 @@
 <script>
   const elTS = document.getElementById('build-timestamp');
   const raw = elTS.getAttribute('data-build-time');
-  const dt  = new Date(raw);
+  const dt = new Date(raw);
   document.getElementById('timestamp').textContent = dt.toLocaleString('en-US', {
     weekday: 'short', year: 'numeric', month: 'short',
     day: 'numeric', hour: '2-digit', minute: '2-digit'
