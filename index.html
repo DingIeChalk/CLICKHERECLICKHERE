@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
   <style>
-    body {
+    html, body {
       margin: 0;
       overflow: hidden;
       background: black;
@@ -12,20 +14,26 @@
 
     img.mrhuxbouncy {
       position: absolute;
-      width: 100px;
+      width: clamp(60px, 15vw, 120px);
       height: auto;
       cursor: pointer;
       user-select: none;
       -webkit-user-drag: none;
+
+      /* ↑ existing styles ↑ */
+
+      /* ↓ mobile tap enhancements ↓ */
+      padding: 12px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     #click-hint {
       position: absolute;
       font-family: 'Carter One', cursive;
-      font-size: 24px;
+      font-size: clamp(18px, 5vw, 24px);
       color: #FF9900;
       z-index: 9999;
-      user-select: none;
       pointer-events: none;
       transform: translate(-50%, -100%);
     }
@@ -33,7 +41,7 @@
     .falling-text {
       position: fixed;
       font-family: 'Carter One', cursive;
-      font-size: 24px;
+      font-size: clamp(14px, 4vw, 24px);
       color: #FF9900;
       pointer-events: none;
       z-index: 9998;
@@ -42,12 +50,8 @@
     }
 
     @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(var(--start-angle));
-      }
-      100% {
-        transform: translateY(120vh) rotate(var(--end-angle));
-      }
+      from { transform: translateY(0) rotate(var(--start-angle)); }
+      to   { transform: translateY(120vh) rotate(var(--end-angle)); }
     }
   </style>
 </head>
@@ -63,10 +67,12 @@
   </audio>
 
   <script>
+    // Core variables
     const logos = [];
     const hint = document.getElementById('click-hint');
     let fallingTextStarted = false;
 
+    // Phrases for falling text
     const phrases = [
       "BUY NOW!!",
       "THE BEST DEALS!!",
@@ -79,41 +85,36 @@
       "CHECK BACK OFTEN!"
     ];
 
+    // Play click sound
     function playClickSound() {
       const click = new Audio("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Click.mp3");
       click.volume = 0.3;
       click.play();
     }
 
+    // Spawn one falling phrase
     function spawnFallingText() {
       const text = document.createElement('div');
       text.className = 'falling-text';
       text.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-
-      const startAngle = (Math.random() * 20 - 10) + "deg";
-      const endAngle = (Math.random() * 20 - 10) + "deg";
-
-      text.style.left = Math.floor(Math.random() * 100) + "vw";
-      text.style.setProperty('--start-angle', startAngle);
-      text.style.setProperty('--end-angle', endAngle);
-
+      text.style.left = Math.random() * 100 + "vw";
+      text.style.setProperty('--start-angle', (Math.random() * 20 - 10) + "deg");
+      text.style.setProperty('--end-angle',   (Math.random() * 20 - 10) + "deg");
       document.body.appendChild(text);
       setTimeout(() => text.remove(), 5000);
     }
 
+    // Start loop of falling text every 2–10 seconds
     function startFallingTextLoop() {
       if (fallingTextStarted) return;
       fallingTextStarted = true;
-
-      function loop() {
+      (function loop() {
         spawnFallingText();
-        const nextTime = Math.random() * 8000 + 2000;
-        setTimeout(loop, nextTime);
-      }
-
-      loop();
+        setTimeout(loop, Math.random() * 8000 + 2000);
+      })();
     }
 
+    // Unified createLogo with click + touch handling
     function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
       const img = document.createElement('img');
       img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
@@ -124,92 +125,90 @@
       const possibleSpeeds = [-3, -2, 2, 3];
       const dxOptions = possibleSpeeds.filter(v => v !== avoidDx);
       const dyOptions = possibleSpeeds.filter(v => v !== avoidDy);
-
       const dx = dxOptions[Math.floor(Math.random() * dxOptions.length)];
       const dy = dyOptions[Math.floor(Math.random() * dyOptions.length)];
-
       const logo = { el: img, x, y, dx, dy };
       logos.push(logo);
 
-      img.addEventListener('click', (e) => {
+      const handleTap = (e) => {
         e.preventDefault();
         playClickSound();
-        if (hint) hint.style.display = 'none';
+        hint.style.display = 'none';
         startFallingTextLoop();
         createLogo(logo.x + 20, logo.y + 20, dx, dy);
-      });
+      };
+
+      img.addEventListener('click', handleTap);
+      img.addEventListener('touchstart', handleTap, { passive: false });
     }
 
+    // Animation loop
     function animate() {
-      logos.forEach((logo, index) => {
+      logos.forEach((logo, i) => {
         const el = logo.el;
         logo.x += logo.dx;
         logo.y += logo.dy;
-
-        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
+        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth)  logo.dx *= -1;
         if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
-
         el.style.left = logo.x + "px";
-        el.style.top = logo.y + "px";
-
-        if (index === 0 && hint && hint.style.display !== 'none') {
-          hint.style.left = (logo.x + el.width / 2) + "px";
-          hint.style.top = logo.y + "px";
+        el.style.top  = logo.y + "px";
+        // Keep the hint above the first logo
+        if (i === 0 && hint.style.display !== 'none') {
+          hint.style.left = (logo.x + el.width/2) + "px";
+          hint.style.top  = logo.y + "px";
         }
       });
       requestAnimationFrame(animate);
     }
 
+    // Start
     createLogo();
     animate();
 
+    // Play BGM only after first user tap/click
     document.addEventListener('click', function playMusicOnce() {
       const bgm = document.getElementById('bgm');
       bgm.volume = 0.25;
-      if (bgm.paused) {
-        bgm.play();
-      }
+      if (bgm.paused) bgm.play();
       document.removeEventListener('click', playMusicOnce);
     });
 
-    // 🔐 Secret phrase trigger (MRHUX)
+    // Secret phrase MRHUX → Google Doc
     let typedInput = '';
-    const secretPhrase = 'MRHUX';
-    const redirectURL = 'https://docs.google.com/document/d/18NIecDFEgBrAGSwHVMKac1ioD2QDntqn_AlJJV3SeBQ/edit?usp=sharing';
-
-    document.addEventListener('keydown', (event) => {
-      typedInput += event.key.toUpperCase();
-      if (typedInput.length > secretPhrase.length) {
-        typedInput = typedInput.slice(-secretPhrase.length);
-      }
-      if (typedInput === secretPhrase) {
-        window.open(redirectURL, '_blank');
-        typedInput = ''; // optional: clear it after redirect
+    document.addEventListener('keydown', (e) => {
+      typedInput += e.key.toUpperCase();
+      if (typedInput.length > 5) typedInput = typedInput.slice(-5);
+      if (typedInput === 'MRHUX') {
+        window.open(
+          'https://docs.google.com/document/d/18NIecDFEgBrAGSwHVMKac1ioD2QDntqn_AlJJV3SeBQ/edit?usp=sharing',
+          '_blank'
+        );
+        typedInput = '';
       }
     });
   </script>
-  <!-- START: BUILD TIMESTAMP (EASY TO REMOVE) -->
-<div id="build-timestamp" style="
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  font-size: 12px;
-  font-family: monospace;
-  color: rgba(255, 255, 255, 0.3);
-  z-index: 9999;
-  pointer-events: none;
-">
-  Last build: <span id="timestamp"></span>
-</div>
 
-<script>
-  const now = new Date();
-  const timestamp = now.toLocaleString('en-US', {
-    weekday: 'short', year: 'numeric', month: 'short',
-    day: 'numeric', hour: '2-digit', minute: '2-digit'
-  });
-  document.getElementById("timestamp").textContent = timestamp;
-</script>
-<!-- END: BUILD TIMESTAMP (EASY TO REMOVE) -->
+  <!-- START: BUILD TIMESTAMP (EASY TO REMOVE) -->
+  <div id="build-timestamp" style="
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    font-family: monospace;
+    color: rgba(255,255,255,0.3);
+    z-index: 9999;
+    pointer-events: none;
+  ">
+    Last build: <span id="timestamp"></span>
+  </div>
+  <script>
+    document.getElementById("timestamp").textContent =
+      new Date().toLocaleString('en-US', {
+        weekday:'short', year:'numeric', month:'short',
+        day:'numeric', hour:'2-digit', minute:'2-digit'
+      });
+  </script>
+  <!-- END: BUILD TIMESTAMP (EASY TO REMOVE) -->
+
 </body>
 </html>
