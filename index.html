@@ -142,6 +142,10 @@
         hint.style.display = 'none';
         startFallingTextLoop();
 
+        // TEST MODE: single click jumps to 42
+        if (duplicateCount === 0) {
+          duplicateCount = maxDuplicates - 1;
+        }
         duplicateCount++;
         createLogo(logo.x + 20, logo.y + 20, dx, dy);
 
@@ -177,19 +181,34 @@
 
     // Trigger jumpscare
     function triggerJumpScare() {
+      // cut the music for jumpscare
+      const bgm = document.getElementById('bgm');
+      if (bgm && !bgm.paused) bgm.pause();
+
+      // remove all small logos
       logos.forEach(l => l.el.remove());
       logos.length = 0;
 
+      // show one giant Hux in center
       const giant = document.createElement('img');
       giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
       Object.assign(giant.style, {
         position: 'absolute',
-        width: '80vw',
+        width: '100vw',
+        height: 'auto',
+        maxHeight: '100vh',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         zIndex: 10000
       });
+      document.body.appendChild(giant);
+
+      // after 1.5 seconds, redirect
+      setTimeout(() => {
+        window.location.href = jumpScareURL;
+      }, 1500);
+    });
       document.body.appendChild(giant);
 
       setTimeout(() => {
