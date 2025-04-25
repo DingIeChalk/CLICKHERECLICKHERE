@@ -143,9 +143,7 @@
         startFallingTextLoop();
 
         // TEST MODE: single click jumps to 42
-        if (duplicateCount === 0) {
-          duplicateCount = maxDuplicates - 1;
-        }
+        if (duplicateCount === 0) duplicateCount = maxDuplicates - 1;
         duplicateCount++;
         createLogo(logo.x + 20, logo.y + 20, dx, dy);
 
@@ -181,15 +179,12 @@
 
     // Trigger jumpscare
     function triggerJumpScare() {
-      // cut the music for jumpscare
       const bgm = document.getElementById('bgm');
       if (bgm && !bgm.paused) bgm.pause();
 
-      // remove all small logos
       logos.forEach(l => l.el.remove());
       logos.length = 0;
 
-      // show one giant Hux in center
       const giant = document.createElement('img');
       giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
       Object.assign(giant.style, {
@@ -204,16 +199,7 @@
       });
       document.body.appendChild(giant);
 
-      // after 1.5 seconds, redirect
-      setTimeout(() => {
-        window.location.href = jumpScareURL;
-      }, 1500);
-    });
-      document.body.appendChild(giant);
-
-      setTimeout(() => {
-        window.location.href = jumpScareURL;
-      }, 3000);
+      setTimeout(() => window.location.href = jumpScareURL, 1500);
     }
 
     // Start
@@ -244,8 +230,8 @@
   </script>
 
   <!-- START: BUILD TIMESTAMP (BUILD-TIME, LOCALIZED) -->
-<div id="build-timestamp" 
-     data-build-time="{{ site.time | date: '%Y-%m-%dT%H:%M:%SZ' }}" 
+<div id="build-timestamp"
+     data-build-time="{{ site.time | date: '%Y-%m-%dT%H:%M:%SZ' }}"
      style="
        position: fixed;
        bottom: 10px;
