@@ -240,31 +240,43 @@
 </script>
 <!-- END: BUILD TIMESTAMP -->
 <script>
-  let secretPhrase = null;
-  let typed = "";
+  // ← START HIGHLIGHT (line 242)
 
-  // 1) fetch the secret from your serverless function
-  fetch("/api/secrets")
+  // will hold your page-specific secret once fetched
+  let secretPhrase = null
+  // buffer of keys the user has typed
+  let buffer = ''
+
+  // 1) pull in the secret from your serverless function
+  fetch('/api/secrets')
     .then(r => r.json())
     .then(data => {
-      secretPhrase = data.secret;
-      console.log("Loaded secret for huxspin:", secretPhrase);
+      secretPhrase = data.secret
+      console.log('Loaded secret for huxspin:', secretPhrase)
     })
-    .catch(console.error);
+    .catch(console.error)
 
-  // 2) watch every keydown
-  document.addEventListener("keydown", e => {
-    if (!secretPhrase) return;           // not ready yet
-    typed += e.key.toUpperCase();        // accumulate
-    // keep only the last N chars:
-    if (typed.length > secretPhrase.length) {
-      typed = typed.slice(-secretPhrase.length);
+  // 2) on every keydown…
+  document.addEventListener('keydown', e => {
+    if (!secretPhrase) return       // not ready yet
+    if (e.key === 'Enter') {
+      // when they hit Enter, compare the buffer
+      if (buffer === secretPhrase) {
+        window.location.href = '/home'
+      }
+      // reset no matter what
+      buffer = ''
+    } else if (e.key.length === 1) {
+      // accumulate only printable keys
+      buffer += e.key.toUpperCase()
+      // keep only the last N chars
+      if (buffer.length > secretPhrase.length) {
+        buffer = buffer.slice(-secretPhrase.length)
+      }
     }
-    if (typed === secretPhrase) {
-      // ✅ you hit it!
-      window.location.href = "/home.html";
-    }
-  });
+  })
+
+  // ← END HIGHLIGHT (line 268)
 </script>
 </body>
 </html>
