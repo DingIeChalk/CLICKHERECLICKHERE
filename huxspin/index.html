@@ -219,26 +219,74 @@
     });
   </script>
 
-<!-- START: BUILD TIMESTAMP (CLIENT-SIDE) -->
-<div id="build-timestamp"
-     style="position:fixed;bottom:10px;right:10px;
-            font-size:12px;font-family:monospace;
-            color:rgba(255,255,255,0.3);pointer-events:none;">
-  Last build: <span id="timestamp"></span>
-</div>
-<script>
-  // Create your "build" timestamp purely on load
-  const now = new Date();
-  document.getElementById("timestamp").textContent = now.toLocaleString("en-US", {
-    weekday: "short",
-    year:    "numeric",
-    month:   "short",
-    day:     "numeric",
-    hour:    "2-digit",
-    minute:  "2-digit"
-  });
-</script>
-<!-- END: BUILD TIMESTAMP -->
+  <!-- FETCH & SHOW LATEST GITHUB COMMIT DATE -->
+  <div id="build-timestamp" style="
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    font-family: monospace;
+    color: rgba(255,255,255,0.3);
+    z-index: 9999;
+    pointer-events: none;
+  ">
+    Last update: <span id="timestamp">loading…</span>
+  </div>
+  <script>
+    // get the most recent commit on main and display its date
+    fetch('https://api.github.com/repos/DingleChalk/CLICKHERECLICKHERE/commits/main')
+      .then(r => r.json())
+      .then(data => {
+        const d = new Date(data.commit.committer.date);
+        document.getElementById('timestamp').textContent =
+          d.toLocaleString('en-US', {
+            weekday: 'short', year: 'numeric',
+            month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+          });
+      })
+      .catch(_=> {
+        document.getElementById('timestamp').textContent = 'unknown';
+      });
+  </script>
+
+  <!-- ENTER-TO-SUBMIT SECRET PHRASE -->
+  <script>
+    let secretPhrase = null;
+    let buffer = '';
+
+    // pull in your Vercel function value
+    fetch('/api/secrets')
+      .then(r => r.json())
+      .then(data => {
+        secretPhrase = data.secret;
+        console.log('Loaded secret:', secretPhrase);
+      })
+      .catch(console.error);
+
+    // on every key press…
+    document.addEventListener('keydown', e => {
+      if (!secretPhrase) return;          // function not ready yet
+
+      if (e.key === 'Enter') {
+        // submit buffer when Enter is pressed
+        if (buffer === secretPhrase) {
+          window.location.href = '/home';
+        }
+        buffer = '';                      // clear either way
+      }
+      else if (e.key.length === 1) {
+        // only track single-character keys
+        buffer += e.key.toUpperCase();
+        if (buffer.length > secretPhrase.length) {
+          buffer = buffer.slice(-secretPhrase.length);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+
 <script>
   // ← START HIGHLIGHT (line 242)
 
