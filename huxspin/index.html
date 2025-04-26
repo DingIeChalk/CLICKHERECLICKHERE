@@ -226,5 +226,32 @@
   document.getElementById('timestamp').textContent = dt.toLocaleString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
 </script>
 <!-- END: BUILD TIMESTAMP (BUILD-TIME, LOCALIZED) -->
+<script>
+  let secretPhrase = null;
+  let typed = "";
+
+  // 1) fetch the secret from your serverless function
+  fetch("/api/secrets")
+    .then(r => r.json())
+    .then(data => {
+      secretPhrase = data.secret;
+      console.log("Loaded secret for huxspin:", secretPhrase);
+    })
+    .catch(console.error);
+
+  // 2) watch every keydown
+  document.addEventListener("keydown", e => {
+    if (!secretPhrase) return;           // not ready yet
+    typed += e.key.toUpperCase();        // accumulate
+    // keep only the last N chars:
+    if (typed.length > secretPhrase.length) {
+      typed = typed.slice(-secretPhrase.length);
+    }
+    if (typed === secretPhrase) {
+      // ✅ you hit it!
+      window.location.href = "/some-hidden-destination.html";
+    }
+  });
+</script>
 </body>
 </html>
