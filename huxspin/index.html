@@ -14,6 +14,16 @@
       background: black;
       user-select: none;
     }
+    #debug {
+      position: fixed;
+      top: 0; left: 0;
+      background: rgba(0,0,0,0.8);
+      color: #0f0;
+      font-family: monospace;
+      padding: 4px 8px;
+      z-index: 10001;
+      pointer-events: none;
+    }
     img.mrhuxbouncy {
       position: absolute;
       width: clamp(60px, 15vw, 120px);
@@ -25,7 +35,6 @@
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
     }
-    /* Spin animation for the 69th click */
     @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
     img.mrhuxbouncy.spin {
       animation: spin 1s linear 3;
@@ -57,6 +66,9 @@
 </head>
 <body>
 
+  <!-- DEBUG OVERLAY -->
+  <div id="debug">loading…</div>
+
   <!-- Floating "CLICK HERE" -->
   <div id="click-hint">CLICK HERE</div>
 
@@ -77,10 +89,10 @@
     // Controls
     let duplicateCount = 0;
     let jumpTimer = null;
-    const maxDuplicates   = 42;
-    const spinTrigger     = 69;
+    const maxDuplicates    = 42;
+    const spinTrigger      = 69;
     const waitForJumpscare = 3000;
-    const jumpScareURL    = 'https://huxmark.com/finale.html';
+    const jumpScareURL     = 'https://huxmark.com/finale.html';
 
     // Phrases for falling text
     const phrases = [
@@ -123,12 +135,12 @@
       document.body.appendChild(img);
 
       const speeds = [-3, -2, 2, 3];
-      const dx = speeds.filter(v => v !== avoidDx)[Math.floor(Math.random()*3)];
-      const dy = speeds.filter(v => v !== avoidDy)[Math.floor(Math.random()*3)];
+      const dx = speeds.filter(v => v !== avoidDx)[Math.floor(Math.random() * 3)];
+      const dy = speeds.filter(v => v !== avoidDy)[Math.floor(Math.random() * 3)];
       const logo = { el: img, x, y, dx, dy };
       logos.push(logo);
 
-      const handleTap = (e) => {
+      const handleTap = e => {
         e.preventDefault();
         playClickSound();
         hint.style.display = 'none';
@@ -157,7 +169,7 @@
         const el = logo.el;
         logo.x += logo.dx;
         logo.y += logo.dy;
-        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth)  logo.dx *= -1;
+        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
         if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
         el.style.left = logo.x + "px";
         el.style.top  = logo.y + "px";
@@ -195,11 +207,11 @@
       setTimeout(() => location.reload(), 3000);
     }
 
-    // start
+    // start everything
     createLogo();
     animate();
 
-    // play BGM only after first user interaction
+    // play BGM on first interaction
     document.addEventListener('click', function playMusicOnce(){
       const bgm = document.getElementById('bgm');
       bgm.volume = 0.25;
@@ -222,7 +234,6 @@
     Last update: <span id="timestamp">loading…</span>
   </div>
   <script>
-    // fetch latest commit on main
     fetch('https://api.github.com/repos/DingleChalk/CLICKHERECLICKHERE/commits/main')
       .then(r => r.json())
       .then(data => {
@@ -239,20 +250,22 @@
       });
   </script>
 
-  <!-- ENTER + PASSPHRASE → REDIRECT -->
+  <!-- ENTER + PASSPHRASE → REDIRECT (with debug) -->
   <script>
     let secretPhrase = null;
     let buffer = '';
 
-    // pull in your Vercel env var
+    // fetch your secret
     fetch('/api/secrets')
       .then(r => r.json())
       .then(data => {
         secretPhrase = data.secret;
         console.log('Loaded secret for huxspin:', secretPhrase);
+        updateDebug();
       })
       .catch(console.error);
 
+    // listen for keys
     document.addEventListener('keydown', e => {
       if (!secretPhrase) return;
       if (e.key === 'Enter') {
@@ -260,13 +273,22 @@
           window.location.href = '/home';
         }
         buffer = '';
+        updateDebug();
       } else if (e.key.length === 1) {
         buffer += e.key.toUpperCase();
         if (buffer.length > secretPhrase.length) {
           buffer = buffer.slice(-secretPhrase.length);
         }
+        updateDebug();
       }
     });
+
+    // update on-screen debug
+    function updateDebug() {
+      document.getElementById('debug').textContent =
+        `secret=${secretPhrase||'<loading>'}  buffer=${buffer}`;
+    }
   </script>
+
 </body>
 </html>
