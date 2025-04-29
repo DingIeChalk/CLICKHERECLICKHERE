@@ -1,113 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Huxmark</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
-      overflow: hidden;
       background: black;
+      overflow: hidden;
       user-select: none;
     }
+
+    #click-hint {
+      font-family: 'Carter One', cursive;
+      font-size: clamp(18px, 5vw, 24px);
+      color: orange;
+      position: absolute;
+      transform: translate(-50%, -100%);
+      z-index: 1000;
+    }
+
     img.mrhuxbouncy {
       position: absolute;
       width: clamp(60px, 15vw, 120px);
       height: auto;
-      cursor: pointer;
-      user-select: none;
-      -webkit-user-drag: none;
       padding: 12px;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+      -webkit-user-drag: none;
     }
-    #click-hint {
-      position: absolute;
-      font-family: 'Carter One', cursive;
-      font-size: clamp(18px, 5vw, 24px);
-      color: #FF9900;
-      z-index: 9999;
-      pointer-events: none;
-      transform: translate(-50%, -100%);
-    }
+
     .falling-text {
       position: fixed;
       font-family: 'Carter One', cursive;
       font-size: clamp(14px, 4vw, 24px);
-      color: #FF9900;
+      color: orange;
       pointer-events: none;
       z-index: 9998;
-      transform-origin: center;
       animation: fall 5s linear forwards;
     }
+
     @keyframes fall {
       from { transform: translateY(0) rotate(var(--start-angle)); }
       to   { transform: translateY(120vh) rotate(var(--end-angle)); }
     }
+
     #debug {
       position: fixed;
-      top: 0; left: 0;
-      background: rgba(0,0,0,0.8);
-      color: #0f0;
+      top: 0;
+      left: 0;
+      color: lime;
       font-family: monospace;
-      padding: 4px 8px;
+      padding: 6px 10px;
       z-index: 10001;
-      pointer-events: none;
+    }
+
+    #build-timestamp {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-family: monospace;
       font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      z-index: 9999;
     }
   </style>
 </head>
 <body>
 
-  <!-- Debug overlay -->
-  <div id="debug">Loading…</div>
-
-  <!-- Floating "CLICK HERE" -->
   <div id="click-hint">CLICK HERE</div>
-
-  <!-- Background Music -->
+  <div id="debug">Loading...</div>
   <audio id="bgm" autoplay loop>
-    <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg">
+    <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg" />
   </audio>
 
   <script>
-    // Variables
+    const hint = document.getElementById("click-hint");
     const logos = [];
-    const hint = document.getElementById('click-hint');
-    let fallingTextStarted = false;
     let duplicateCount = 0;
     let jumpTimer = null;
-    const maxDuplicates = 42;
-    const spinTrigger = 69;
-    const waitForJumpscare = 3000;
-    const jumpScareURL = 'https://huxmark.com/finale.html';
-
-    // Falling text phrases
+    let fallingTextStarted = false;
     const phrases = [
-      "BUY NOW!!", "THE BEST DEALS!!", "LIMITED TIME OFFER!", "CLICK WHILE YOU CAN!",
-      "YOU CAN’T AFFORD NOT TO!", "TERMS & CONDITIONS APPLY*", "DEALS THAT DEFY LOGIC!",
-      "EVERY CLICK GUARANTEED!", "CHECK BACK OFTEN!"
+      "BUY NOW!!", "LIMITED TIME OFFER!", "EVERY CLICK GUARANTEED!", "CHECK BACK OFTEN!",
+      "TERMS & CONDITIONS APPLY*", "YOU CAN’T AFFORD NOT TO!", "THE BEST DEALS!!"
     ];
 
-    // Sounds
     function playClickSound() {
       const click = new Audio("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Click.mp3");
       click.volume = 0.3;
       click.play();
     }
 
-    // Spawn falling text
     function spawnFallingText() {
-      const text = document.createElement('div');
-      text.className = 'falling-text';
-      text.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-      text.style.left = Math.random() * 100 + "vw";
-      text.style.setProperty('--start-angle', (Math.random() * 20 - 10) + "deg");
-      text.style.setProperty('--end-angle', (Math.random() * 20 - 10) + "deg");
-      document.body.appendChild(text);
-      setTimeout(() => text.remove(), 5000);
+      const t = document.createElement("div");
+      t.className = "falling-text";
+      t.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+      t.style.left = Math.random() * 100 + "vw";
+      t.style.setProperty('--start-angle', (Math.random() * 20 - 10) + "deg");
+      t.style.setProperty('--end-angle', (Math.random() * 20 - 10) + "deg");
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 5000);
     }
 
     function startFallingTextLoop() {
@@ -119,9 +111,8 @@
       })();
     }
 
-    // Create bouncy logo
     function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
-      const img = document.createElement('img');
+      const img = document.createElement("img");
       img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
       img.className = "mrhuxbouncy";
       img.draggable = false;
@@ -133,28 +124,14 @@
       const logo = { el: img, x, y, dx, dy };
       logos.push(logo);
 
-      const handleTap = e => {
+      img.addEventListener("click", e => {
         e.preventDefault();
         playClickSound();
-        hint.style.display = 'none';
+        hint.style.display = "none";
         startFallingTextLoop();
-
         duplicateCount++;
         createLogo(logo.x + 20, logo.y + 20, dx, dy);
-
-        if (duplicateCount === maxDuplicates) {
-          jumpTimer = setTimeout(triggerJumpScare, waitForJumpscare);
-        } else if (duplicateCount > maxDuplicates && jumpTimer) {
-          clearTimeout(jumpTimer);
-          jumpTimer = null;
-        }
-        if (duplicateCount === spinTrigger) {
-          triggerSpin();
-        }
-      };
-
-      img.addEventListener('click', handleTap);
-      img.addEventListener('touchstart', handleTap, { passive: false });
+      });
     }
 
     function animate() {
@@ -165,105 +142,80 @@
         if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
         if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
         el.style.left = logo.x + "px";
-        el.style.top  = logo.y + "px";
-        if (i === 0 && hint.style.display !== 'none') {
-          hint.style.left = (logo.x + el.width/2) + "px";
-          hint.style.top  = logo.y + "px";
+        el.style.top = logo.y + "px";
+        if (i === 0 && hint.style.display !== "none") {
+          hint.style.left = (logo.x + el.width / 2) + "px";
+          hint.style.top = logo.y + "px";
         }
       });
       requestAnimationFrame(animate);
     }
 
-    function triggerJumpScare() {
-      const bgm = document.getElementById('bgm');
-      if (bgm && !bgm.paused) bgm.pause();
-      logos.forEach(l => l.el.remove());
-      logos.length = 0;
-      const giant = document.createElement('img');
-      giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
-      Object.assign(giant.style, {
-        position: 'absolute', width: '100vw', height: 'auto', maxHeight: '100vh',
-        top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 10000
-      });
-      document.body.appendChild(giant);
-      setTimeout(() => window.location.href = jumpScareURL, 1500);
-    }
-
-    function triggerSpin() {
-      logos.forEach(l => l.el.classList.add('spin'));
-      setTimeout(() => location.reload(), 3000);
-    }
-
     createLogo();
     animate();
 
-    document.addEventListener('click', function playMusicOnce() {
-      const bgm = document.getElementById('bgm');
+    document.addEventListener("click", function playMusicOnce() {
+      const bgm = document.getElementById("bgm");
       bgm.volume = 0.25;
       if (bgm.paused) bgm.play();
-      document.removeEventListener('click', playMusicOnce);
+      document.removeEventListener("click", playMusicOnce);
     });
 
-    // Fetch & Show Latest Commit Timestamp
-    fetch('https://api.github.com/repos/DingleChalk/CLICKHERECLICKHERE/commits/main')
+    // Secret passphrase fetch & match
+    let secretPhrase = null;
+    let buffer = "";
+
+    fetch("/api/secrets")
       .then(r => r.json())
       .then(data => {
-        const d = new Date(data.commit.committer.date);
-        const offset = d.getTime() - (6 * 60 * 60 * 1000); // Convert UTC → CST manually
-        document.getElementById('timestamp').textContent =
-          new Date(offset).toLocaleString('en-US', {
-            weekday: 'short', year: 'numeric',
-            month: 'short', day: 'numeric',
-            hour: '2-digit', minute: '2-digit'
-          });
+        secretPhrase = data.secret;
+        document.getElementById("debug").textContent = "Secret loaded. Type and press Enter.";
       })
-      .catch(_ => {
-        document.getElementById('timestamp').textContent = 'unknown';
+      .catch(err => {
+        document.getElementById("debug").textContent = "Error loading secret.";
+        console.error(err);
       });
 
-    // === PASSCODE SYSTEM ===
-    let secretPhrase = null;
-    let buffer = '';
-
-    fetch('/api/secrets')
-      .then(r => r.json())
-      .then(data => {
-        secretPhrase = data.secret.toUpperCase();
-        console.log('Loaded secret:', secretPhrase);
-      })
-      .catch(console.error);
-
-    document.addEventListener('keydown', e => {
+    document.addEventListener("keydown", e => {
+      if (e.ctrlKey || e.metaKey) return; // prevent ctrl+backspace bug
       if (!secretPhrase) return;
-      if (e.key === 'Enter') {
+
+      if (e.key === "Enter") {
         if (buffer === secretPhrase) {
-          window.location.href = '/home';
+          window.location.href = "/home";
+        } else {
+          document.getElementById("debug").textContent = "Incorrect phrase.";
         }
-        buffer = '';
-        updateDebug();
+        buffer = "";
       } else if (e.key.length === 1) {
         buffer += e.key.toUpperCase();
         if (buffer.length > secretPhrase.length) {
           buffer = buffer.slice(-secretPhrase.length);
         }
-        updateDebug();
       }
-    });
 
-    function updateDebug() {
-      document.getElementById('debug').textContent =
-        `Typed: ${buffer}`;
-    }
+      document.getElementById("debug").textContent = `Buffer: ${buffer}`;
+    });
   </script>
 
-  <!-- Timestamp -->
-  <div id="build-timestamp" style="
-    position:fixed;bottom:10px;right:10px;
-    font-size:12px;font-family:monospace;
-    color:rgba(255,255,255,0.3);z-index:9999;
-    pointer-events:none;">
-    Last update: <span id="timestamp">loading…</span>
-  </div>
+  <!-- LAST BUILD TIME DISPLAY (IN CST) -->
+  <div id="build-timestamp">Last update: loading...</div>
+  <script>
+    fetch("https://api.github.com/repos/DingleChalk/CLICKHERECLICKHERE/commits/main")
+      .then(r => r.json())
+      .then(data => {
+        const utc = new Date(data.commit.committer.date);
+        const cst = new Date(utc.toLocaleString("en-US", { timeZone: "America/Chicago" }));
+        document.getElementById("build-timestamp").textContent =
+          "Last update: " + cst.toLocaleString("en-US", {
+            weekday: "short", year: "numeric", month: "short",
+            day: "numeric", hour: "2-digit", minute: "2-digit"
+          });
+      })
+      .catch(() => {
+        document.getElementById("build-timestamp").textContent = "Last update: unknown";
+      });
+  </script>
 
 </body>
 </html>
