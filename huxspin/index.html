@@ -122,4 +122,148 @@
     // Create bouncy logo
     function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
       const img = document.createElement('img');
-      img.src = "https://raw.githubusercontent.com/DingIeChalk/
+      img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
+      img.className = "mrhuxbouncy";
+      img.draggable = false;
+      document.body.appendChild(img);
+
+      const speeds = [-3, -2, 2, 3];
+      const dx = speeds.filter(v => v !== avoidDx)[Math.floor(Math.random() * 3)];
+      const dy = speeds.filter(v => v !== avoidDy)[Math.floor(Math.random() * 3)];
+      const logo = { el: img, x, y, dx, dy };
+      logos.push(logo);
+
+      const handleTap = e => {
+        e.preventDefault();
+        playClickSound();
+        hint.style.display = 'none';
+        startFallingTextLoop();
+
+        duplicateCount++;
+        createLogo(logo.x + 20, logo.y + 20, dx, dy);
+
+        if (duplicateCount === maxDuplicates) {
+          jumpTimer = setTimeout(triggerJumpScare, waitForJumpscare);
+        } else if (duplicateCount > maxDuplicates && jumpTimer) {
+          clearTimeout(jumpTimer);
+          jumpTimer = null;
+        }
+        if (duplicateCount === spinTrigger) {
+          triggerSpin();
+        }
+      };
+
+      img.addEventListener('click', handleTap);
+      img.addEventListener('touchstart', handleTap, { passive: false });
+    }
+
+    function animate() {
+      logos.forEach((logo, i) => {
+        const el = logo.el;
+        logo.x += logo.dx;
+        logo.y += logo.dy;
+        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
+        if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
+        el.style.left = logo.x + "px";
+        el.style.top  = logo.y + "px";
+        if (i === 0 && hint.style.display !== 'none') {
+          hint.style.left = (logo.x + el.width/2) + "px";
+          hint.style.top  = logo.y + "px";
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+
+    function triggerJumpScare() {
+      const bgm = document.getElementById('bgm');
+      if (bgm && !bgm.paused) bgm.pause();
+      logos.forEach(l => l.el.remove());
+      logos.length = 0;
+      const giant = document.createElement('img');
+      giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
+      Object.assign(giant.style, {
+        position: 'absolute', width: '100vw', height: 'auto', maxHeight: '100vh',
+        top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 10000
+      });
+      document.body.appendChild(giant);
+      setTimeout(() => window.location.href = jumpScareURL, 1500);
+    }
+
+    function triggerSpin() {
+      logos.forEach(l => l.el.classList.add('spin'));
+      setTimeout(() => location.reload(), 3000);
+    }
+
+    createLogo();
+    animate();
+
+    document.addEventListener('click', function playMusicOnce() {
+      const bgm = document.getElementById('bgm');
+      bgm.volume = 0.25;
+      if (bgm.paused) bgm.play();
+      document.removeEventListener('click', playMusicOnce);
+    });
+
+    // Fetch & Show Latest Commit Timestamp
+    fetch('https://api.github.com/repos/DingleChalk/CLICKHERECLICKHERE/commits/main')
+      .then(r => r.json())
+      .then(data => {
+        const d = new Date(data.commit.committer.date);
+        const offset = d.getTime() - (6 * 60 * 60 * 1000); // Convert UTC → CST manually
+        document.getElementById('timestamp').textContent =
+          new Date(offset).toLocaleString('en-US', {
+            weekday: 'short', year: 'numeric',
+            month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+          });
+      })
+      .catch(_ => {
+        document.getElementById('timestamp').textContent = 'unknown';
+      });
+
+    // === PASSCODE SYSTEM ===
+    let secretPhrase = null;
+    let buffer = '';
+
+    fetch('/api/secrets')
+      .then(r => r.json())
+      .then(data => {
+        secretPhrase = data.secret.toUpperCase();
+        console.log('Loaded secret:', secretPhrase);
+      })
+      .catch(console.error);
+
+    document.addEventListener('keydown', e => {
+      if (!secretPhrase) return;
+      if (e.key === 'Enter') {
+        if (buffer === secretPhrase) {
+          window.location.href = '/home';
+        }
+        buffer = '';
+        updateDebug();
+      } else if (e.key.length === 1) {
+        buffer += e.key.toUpperCase();
+        if (buffer.length > secretPhrase.length) {
+          buffer = buffer.slice(-secretPhrase.length);
+        }
+        updateDebug();
+      }
+    });
+
+    function updateDebug() {
+      document.getElementById('debug').textContent =
+        `Typed: ${buffer}`;
+    }
+  </script>
+
+  <!-- Timestamp -->
+  <div id="build-timestamp" style="
+    position:fixed;bottom:10px;right:10px;
+    font-size:12px;font-family:monospace;
+    color:rgba(255,255,255,0.3);z-index:9999;
+    pointer-events:none;">
+    Last update: <span id="timestamp">loading…</span>
+  </div>
+
+</body>
+</html>
