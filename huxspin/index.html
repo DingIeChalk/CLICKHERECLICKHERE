@@ -3,10 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -64,231 +61,222 @@
     }
   </style>
 </head>
+
 <body>
 
-  <!-- DEBUG OVERLAY -->
-  <div id="debug">loading…</div>
+<!-- DEBUG INFO -->
+<div id="debug">loading…</div>
 
-  <!-- Floating "CLICK HERE" -->
-  <div id="click-hint">CLICK HERE</div>
+<!-- "CLICK HERE" Floating Hint -->
+<div id="click-hint">CLICK HERE</div>
 
-  <!-- Background Music -->
-  <audio id="bgm" autoplay loop>
-    <source
-      src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3"
-      type="audio/mpeg"
-    >
-  </audio>
+<!-- Background Music -->
+<audio id="bgm" autoplay loop>
+  <source src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Funk.mp3" type="audio/mpeg">
+</audio>
 
-  <script>
-    // Core variables
-    const logos = [];
-    const hint = document.getElementById('click-hint');
-    let fallingTextStarted = false;
+<script>
+  // Core Variables
+  const logos = [];
+  const hint = document.getElementById('click-hint');
+  let fallingTextStarted = false;
 
-    // Controls
-    let duplicateCount = 0;
-    let jumpTimer = null;
-    const maxDuplicates    = 42;
-    const spinTrigger      = 69;
-    const waitForJumpscare = 3000;
-    const jumpScareURL     = 'https://huxmark.com/finale.html';
+  // Controls
+  let duplicateCount = 0;
+  let jumpTimer = null;
+  const maxDuplicates = 42;
+  const spinTrigger = 69;
+  const waitForJumpscare = 3000;
+  const jumpScareURL = 'https://huxmark.com/finale.html';
 
-    // Phrases for falling text
-    const phrases = [
-      "BUY NOW!!","THE BEST DEALS!!","LIMITED TIME OFFER!","CLICK WHILE YOU CAN!",
-      "YOU CAN’T AFFORD NOT TO!","TERMS & CONDITIONS APPLY*","DEALS THAT DEFY LOGIC!",
-      "EVERY CLICK GUARANTEED!","CHECK BACK OFTEN!"
-    ];
+  // Floating Text Phrases
+  const phrases = [
+    "BUY NOW!!","THE BEST DEALS!!","LIMITED TIME OFFER!","CLICK WHILE YOU CAN!",
+    "YOU CAN’T AFFORD NOT TO!","TERMS & CONDITIONS APPLY*","DEALS THAT DEFY LOGIC!",
+    "EVERY CLICK GUARANTEED!","CHECK BACK OFTEN!"
+  ];
 
-    function playClickSound() {
-      const click = new Audio("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Click.mp3");
-      click.volume = 0.3;
-      click.play();
-    }
+  function playClickSound() {
+    const click = new Audio("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/Click.mp3");
+    click.volume = 0.3;
+    click.play();
+  }
 
-    function spawnFallingText() {
-      const text = document.createElement('div');
-      text.className = 'falling-text';
-      text.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-      text.style.left = Math.random() * 100 + "vw";
-      text.style.setProperty('--start-angle', (Math.random() * 20 - 10) + "deg");
-      text.style.setProperty('--end-angle',   (Math.random() * 20 - 10) + "deg");
-      document.body.appendChild(text);
-      setTimeout(() => text.remove(), 5000);
-    }
+  function spawnFallingText() {
+    const text = document.createElement('div');
+    text.className = 'falling-text';
+    text.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+    text.style.left = Math.random() * 100 + "vw";
+    text.style.setProperty('--start-angle', (Math.random() * 20 - 10) + "deg");
+    text.style.setProperty('--end-angle', (Math.random() * 20 - 10) + "deg");
+    document.body.appendChild(text);
+    setTimeout(() => text.remove(), 5000);
+  }
 
-    function startFallingTextLoop() {
-      if (fallingTextStarted) return;
-      fallingTextStarted = true;
-      (function loop(){
-        spawnFallingText();
-        setTimeout(loop, Math.random() * 8000 + 2000);
-      })();
-    }
+  function startFallingTextLoop() {
+    if (fallingTextStarted) return;
+    fallingTextStarted = true;
+    (function loop() {
+      spawnFallingText();
+      setTimeout(loop, Math.random() * 8000 + 2000);
+    })();
+  }
 
-    function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
-      const img = document.createElement('img');
-      img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
-      img.className = "mrhuxbouncy";
-      img.draggable = false;
-      document.body.appendChild(img);
+  function createLogo(x = 100, y = 100, avoidDx = null, avoidDy = null) {
+    const img = document.createElement('img');
+    img.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
+    img.className = "mrhuxbouncy";
+    img.draggable = false;
+    document.body.appendChild(img);
 
-      const speeds = [-3, -2, 2, 3];
-      const dx = speeds.filter(v => v !== avoidDx)[Math.floor(Math.random() * 3)];
-      const dy = speeds.filter(v => v !== avoidDy)[Math.floor(Math.random() * 3)];
-      const logo = { el: img, x, y, dx, dy };
-      logos.push(logo);
+    const speeds = [-3, -2, 2, 3];
+    const dx = speeds.filter(v => v !== avoidDx)[Math.floor(Math.random() * 3)];
+    const dy = speeds.filter(v => v !== avoidDy)[Math.floor(Math.random() * 3)];
+    const logo = { el: img, x, y, dx, dy };
+    logos.push(logo);
 
-      const handleTap = e => {
-        e.preventDefault();
-        playClickSound();
-        hint.style.display = 'none';
-        startFallingTextLoop();
+    const handleTap = e => {
+      e.preventDefault();
+      playClickSound();
+      hint.style.display = 'none';
+      startFallingTextLoop();
 
-        duplicateCount++;
-        createLogo(logo.x + 20, logo.y + 20, dx, dy);
+      duplicateCount++;
+      createLogo(logo.x + 20, logo.y + 20, dx, dy);
 
-        if (duplicateCount === maxDuplicates) {
-          jumpTimer = setTimeout(triggerJumpScare, waitForJumpscare);
-        } else if (duplicateCount > maxDuplicates && jumpTimer) {
-          clearTimeout(jumpTimer);
-          jumpTimer = null;
-        }
-        if (duplicateCount === spinTrigger) {
-          triggerSpin();
-        }
-      };
+      if (duplicateCount === maxDuplicates) {
+        jumpTimer = setTimeout(triggerJumpScare, waitForJumpscare);
+      } else if (duplicateCount > maxDuplicates && jumpTimer) {
+        clearTimeout(jumpTimer);
+        jumpTimer = null;
+      }
+      if (duplicateCount === spinTrigger) {
+        triggerSpin();
+      }
+    };
 
-      img.addEventListener('click', handleTap);
-      img.addEventListener('touchstart', handleTap, { passive: false });
-    }
+    img.addEventListener('click', handleTap);
+    img.addEventListener('touchstart', handleTap, { passive: false });
+  }
 
-    function animate() {
-      logos.forEach((logo, i) => {
-        const el = logo.el;
-        logo.x += logo.dx;
-        logo.y += logo.dy;
-        if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
-        if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
-        el.style.left = logo.x + "px";
-        el.style.top  = logo.y + "px";
-        if (i === 0 && hint.style.display !== 'none') {
-          hint.style.left = (logo.x + el.width/2) + "px";
-          hint.style.top  = logo.y + "px";
-        }
-      });
-      requestAnimationFrame(animate);
-    }
-
-    function triggerJumpScare() {
-      const bgm = document.getElementById('bgm');
-      if (bgm && !bgm.paused) bgm.pause();
-      logos.forEach(l => l.el.remove());
-      logos.length = 0;
-      const giant = document.createElement('img');
-      giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
-      Object.assign(giant.style, {
-        position: 'absolute',
-        width: '100vw',
-        height: 'auto',
-        maxHeight: '100vh',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%,-50%)',
-        zIndex: 10000
-      });
-      document.body.appendChild(giant);
-      setTimeout(() => window.location.href = jumpScareURL, 1500);
-    }
-
-    function triggerSpin() {
-      logos.forEach(l => l.el.classList.add('spin'));
-      setTimeout(() => location.reload(), 3000);
-    }
-
-    // start everything
-    createLogo();
-    animate();
-
-    // play BGM on first interaction
-    document.addEventListener('click', function playMusicOnce(){
-      const bgm = document.getElementById('bgm');
-      bgm.volume = 0.25;
-      if (bgm.paused) bgm.play();
-      document.removeEventListener('click', playMusicOnce);
-    });
-  </script>
-
-  <!-- FETCH & SHOW LATEST GITHUB COMMIT DATE -->
-  <div id="build-timestamp" style="
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    font-size: 12px;
-    font-family: monospace;
-    color: rgba(255,255,255,0.3);
-    z-index: 9999;
-    pointer-events: none;
-  ">
-    Last update: <span id="timestamp">loading…</span>
-  </div>
-  <script>
-    fetch('https://api.github.com/repos/DingleChalk/CLICKHERECLICKHERE/commits/main')
-      .then(r => r.json())
-      .then(data => {
-        const d = new Date(data.commit.committer.date);
-        document.getElementById('timestamp').textContent =
-          d.toLocaleString('en-US', {
-            weekday: 'short', year: 'numeric',
-            month:   'short', day: 'numeric',
-            hour:    '2-digit', minute: '2-digit'
-          });
-      })
-      .catch(_ => {
-        document.getElementById('timestamp').textContent = 'unknown';
-      });
-  </script>
-
-  <!-- ENTER + PASSPHRASE → REDIRECT (with debug) -->
-  <script>
-    let secretPhrase = null;
-    let buffer = '';
-
-    // fetch your secret
-    fetch('/api/secrets')
-      .then(r => r.json())
-      .then(data => {
-        secretPhrase = data.secret;
-        console.log('Loaded secret for huxspin:', secretPhrase);
-        updateDebug();
-      })
-      .catch(console.error);
-
-    // listen for keys
-    document.addEventListener('keydown', e => {
-      if (!secretPhrase) return;
-      if (e.key === 'Enter') {
-        if (buffer === secretPhrase) {
-          window.location.href = '/home';
-        }
-        buffer = '';
-        updateDebug();
-      } else if (e.key.length === 1) {
-        buffer += e.key.toUpperCase();
-        if (buffer.length > secretPhrase.length) {
-          buffer = buffer.slice(-secretPhrase.length);
-        }
-        updateDebug();
+  function animate() {
+    logos.forEach((logo, i) => {
+      const el = logo.el;
+      logo.x += logo.dx;
+      logo.y += logo.dy;
+      if (logo.x <= 0 || logo.x + el.width >= window.innerWidth) logo.dx *= -1;
+      if (logo.y <= 0 || logo.y + el.height >= window.innerHeight) logo.dy *= -1;
+      el.style.left = logo.x + "px";
+      el.style.top = logo.y + "px";
+      if (i === 0 && hint.style.display !== 'none') {
+        hint.style.left = (logo.x + el.width / 2) + "px";
+        hint.style.top = logo.y + "px";
       }
     });
+    requestAnimationFrame(animate);
+  }
 
-    // update on-screen debug
-    function updateDebug() {
-      document.getElementById('debug').textContent =
-        `secret=${secretPhrase||'<loading>'}  buffer=${buffer}`;
+  function triggerJumpScare() {
+    const bgm = document.getElementById('bgm');
+    if (bgm && !bgm.paused) bgm.pause();
+    logos.forEach(l => l.el.remove());
+    logos.length = 0;
+    const giant = document.createElement('img');
+    giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
+    Object.assign(giant.style, {
+      position: 'absolute', width: '100vw', height: 'auto', maxHeight: '100vh',
+      top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 10000
+    });
+    document.body.appendChild(giant);
+    setTimeout(() => window.location.href = jumpScareURL, 1500);
+  }
+
+  function triggerSpin() {
+    logos.forEach(l => l.el.classList.add('spin'));
+    setTimeout(() => location.reload(), 3000);
+  }
+
+  createLogo();
+  animate();
+
+  document.addEventListener('click', function playMusicOnce() {
+    const bgm = document.getElementById('bgm');
+    bgm.volume = 0.25;
+    if (bgm.paused) bgm.play();
+    document.removeEventListener('click', playMusicOnce);
+  });
+</script>
+
+<!-- Build Timestamp (LAST UPDATE) -->
+<div id="build-timestamp" style="
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  font-size: 12px;
+  font-family: monospace;
+  color: rgba(255,255,255,0.3);
+  z-index: 9999;
+  pointer-events: none;
+">
+  Last update: <span id="timestamp">Loading…</span>
+</div>
+<script>
+fetch('/api/build-info')
+  .then(r => r.json())
+  .then(data => {
+    const utc = new Date(data.commitTimestamp);
+    const cst = new Date(utc.getTime() - 6 * 60 * 60 * 1000); // adjust to CST
+    document.getElementById('timestamp').textContent =
+      cst.toLocaleString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  })
+  .catch(_ => {
+    document.getElementById('timestamp').textContent = 'unknown';
+  });
+</script>
+
+<!-- SECRET PASSCODE LOGIC -->
+<script>
+let secretPhrase = null;
+let buffer = '';
+
+function updateDebug() {
+  document.getElementById('debug').textContent =
+    `secret=${secretPhrase || '<loading>'}  buffer=${buffer}`;
+}
+
+fetch('/api/secrets')
+  .then(r => r.json())
+  .then(data => {
+    secretPhrase = (data.secret || '').toUpperCase();
+    console.log('✅ Secret loaded:', secretPhrase);
+    updateDebug();
+  })
+  .catch(err => {
+    console.error('❌ Failed to load secret:', err);
+    secretPhrase = null;
+    updateDebug();
+  });
+
+document.addEventListener('keydown', e => {
+  if (!secretPhrase) return;
+  if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+  if (e.key === 'Enter') {
+    if (buffer === secretPhrase) {
+      window.location.href = '/home';
+    } else {
+      buffer = '';
     }
-  </script>
+    updateDebug();
+  } else if (e.key.length === 1) {
+    buffer += e.key.toUpperCase();
+    if (buffer.length > secretPhrase.length) {
+      buffer = buffer.slice(-secretPhrase.length);
+    }
+    updateDebug();
+  }
+});
+</script>
 
 </body>
 </html>
