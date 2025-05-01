@@ -131,7 +131,7 @@
       createLogo(logo.x + 20, logo.y + 20, dx, dy);
 
       if (duplicateCount === maxDuplicates) {
-        jumpTimer = setTimeout(triggerJumpScare, waitForJumpscare);
+        setTimeout(() => triggerJumpScareWithTextbox(), waitForJumpscare);
       } else if (duplicateCount > maxDuplicates && jumpTimer) {
         clearTimeout(jumpTimer);
         jumpTimer = null;
@@ -163,11 +163,13 @@
     requestAnimationFrame(animate);
   }
 
-  function triggerJumpScare() {
+  function triggerJumpScareWithTextbox() {
     const bgm = document.getElementById('bgm');
     if (bgm && !bgm.paused) bgm.pause();
+
     logos.forEach(l => l.el.remove());
     logos.length = 0;
+
     const giant = document.createElement('img');
     giant.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/main/mrhux.png";
     Object.assign(giant.style, {
@@ -181,7 +183,74 @@
       zIndex: 10000
     });
     document.body.appendChild(giant);
-    setTimeout(() => window.location.href = jumpScareURL, 1500);
+
+    setTimeout(() => {
+      giant.remove();
+      showTerminalTextbox();
+    }, 1500);
+  }
+
+  function showTerminalTextbox() {
+    const container = document.createElement('div');
+    Object.assign(container.style, {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: 'black',
+      padding: '20px',
+      borderRadius: '8px',
+      zIndex: 10001,
+      fontFamily: 'monospace',
+      fontSize: 'clamp(16px, 3vw, 22px)',
+      color: '#00FF00',
+      border: '2px solid #00FF00',
+      boxShadow: '0 0 12px #00FF00',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+    });
+
+    const prompt = document.createElement('span');
+    prompt.textContent = '>';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.style.background = 'black';
+    input.style.border = 'none';
+    input.style.outline = 'none';
+    input.style.color = '#00FF00';
+    input.style.fontFamily = 'monospace';
+    input.style.fontSize = 'inherit';
+    input.autofocus = true;
+
+    container.appendChild(prompt);
+    container.appendChild(input);
+    document.body.appendChild(container);
+    input.focus();
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const value = input.value.trim().toLowerCase();
+
+        // MAIN PHRASE
+        if (value === 'proceed') {
+          window.location.href = jumpScareURL;
+        }
+
+        // EASTER EGG HOOK (future usage)
+        else if (value === 'secret') {
+          alert('👁 You found something… but not yet.');
+          input.value = '';
+        }
+
+        // WRONG INPUT
+        else {
+          input.value = '';
+          input.placeholder = 'try again';
+        }
+      }
+    });
   }
 
   function triggerSpin() {
@@ -189,7 +258,6 @@
     setTimeout(() => location.reload(), 3000);
   }
 
-  // Start everything
   createLogo();
   animate();
 
