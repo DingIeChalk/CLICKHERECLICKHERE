@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Huxmark - Your Personal Web Shopping Community*</title>
+  <title>Huxmark - A Curated Shopping Occurrence*</title>
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -42,22 +42,9 @@
       font-weight: bold;
       position: relative;
     }
-    nav a:hover::after {
-      content: attr(title);
-      position: absolute;
-      bottom: -1.5em;
-      left: 0;
-      background: #000;
-      color: #0f0;
-      padding: 2px 6px;
-      font-size: 0.75em;
-      white-space: nowrap;
-      z-index: 1000;
-    }
     .grid-layout {
       display: grid;
-      grid-template-columns: 1fr 2fr;
-      grid-template-rows: auto auto auto;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 20px;
       padding: 30px 5%;
     }
@@ -66,10 +53,6 @@
       border: 2px dashed #000;
       padding: 20px;
       box-shadow: 2px 2px 0 #000;
-      transition: transform 0.2s ease-in-out;
-    }
-    .box-section:hover {
-      transform: scale(1.02);
     }
     .title {
       font-weight: bold;
@@ -89,46 +72,18 @@
       padding: 8px;
       font-family: monospace;
     }
-    #chat-toggle {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background-color: #222;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 999;
-    }
-    #chat-box {
-      display: none;
-      position: fixed;
-      bottom: 50px;
-      right: 10px;
-      width: 300px;
-      height: 400px;
-      background-color: #111;
-      color: #fff;
-      border: 2px solid #555;
-      padding: 10px;
-      z-index: 999;
-      overflow-y: auto;
-    }
     footer {
       text-align: center;
       padding: 15px;
       background-color: #aaa;
       font-size: 0.75em;
     }
-
     @keyframes flicker {
       0%, 100% { opacity: 1; }
       45% { opacity: 0.4; }
       55% { opacity: 1; }
       60% { opacity: 0.8; }
     }
-
     @keyframes hueRotate {
       from { filter: hue-rotate(0deg); }
       to { filter: hue-rotate(360deg); }
@@ -138,93 +93,77 @@
 <body>
   <header>huxmark</header>
   <nav>
-    <a href="/products" title="Browse responsibly">Available Realities</a>
-    <a href="/faq" title="Questions are acceptable">Clarity Engine</a>
-    <a href="/contact" title="Someone is always listening">Reach Out</a>
-    <a href="/about" title="Lore is legally binding">The Lore</a>
-    <a href="/privacy" title="Just trust us">Trust Procedures</a>
+    <a href="#">Deals</a>
+    <a href="#">Departments</a>
+    <a href="#">Impulse Buys</a>
+    <a href="#">Feedback Spiral</a>
+    <a href="#">Trust Procedures</a>
   </nav>
 
   <div class="grid-layout">
-  <div class="box-section">
-    <div class="title">Welcome, Conscious Consumer</div>
-    <p><strong>What is Huxmark?</strong><br> A curated experience designed specifically for your pattern-recognition tendencies.</p>
-    <p><strong>How do I join?</strong><br> You're already participating. (Don’t worry, this is normal.)</p>
-    <p><strong>Is it free?</strong><br> Only in the ways that matter. Not in the ways that count.</p>
+    <div class="box-section">
+      <div class="title">Welcome, Shopper ID #AUTOMATED</div>
+      <p>Huxmark is your one-stop hypervendor for consumable certainties and probable purchases.</p>
+      <p>We know what you want. We know what you almost wanted. We know you hovered.</p>
+    </div>
+
+    <div class="box-section">
+      <div class="title">Top Suggested Vectors</div>
+      <ul>
+        <li>🔹 Temporal Sleepwear</li>
+        <li>🔹 Echo-Reducing Wallpaper</li>
+        <li>🔹 One-Sided Dice (Bulk Pack)</li>
+        <li>🔹 Tube of Indeterminate Purpose</li>
+      </ul>
+    </div>
+
+    <div class="box-section">
+      <div class="title">Flash Observations</div>
+      <p>Visitors who blinked near this page also investigated:</p>
+      <ul>
+        <li>📦 “The Tumbler That Remembers”</li>
+        <li>📦 Self-Watering Alarm Clocks</li>
+        <li>📦 Bag of Screws (Emotional)</li>
+      </ul>
+    </div>
+
+    <div class="box-section">
+      <div class="title">Echoes from the Network</div>
+      <ul>
+        <li>★★★★★ “They said I’d understand. I do. I think I do.”</li>
+        <li>★☆☆☆☆ “Package contained... more than I expected.”</li>
+        <li>★★★★☆ “Customer service agent knew my first pet’s name.”</li>
+      </ul>
+    </div>
+
+    <div class="box-section full">
+      <div class="title">The Feedback Spiral</div>
+      <p>We gathered your clicks, your hesitations, your hesitations about your clicks, and this is what emerged:</p>
+      <ul>
+        <li>🌀 Box of Multipurpose Fabricated Nostalgia</li>
+        <li>🌀 Personalized Emergency Bag (Name may vary)</li>
+        <li>🌀 Sale: Item #000-001-REDACTED</li>
+        <li>🌀 Live-Freeze-Warm Mug</li>
+      </ul>
+    </div>
   </div>
 
-  <div class="box-section">
-    <div class="title">Departments of Interest</div>
-    <ul>
-      <li>Alternate Apparel</li>
-      <li>Retroactive Technology</li>
-      <li>Nutritional Experiments</li>
-      <li>Medicinal Whispers</li>
-      <li>Domestic Oddities</li>
-      <li>Sonic Enhancers</li>
-      <li>Work Simulation Tools</li>
-      <li>Spectator Sports Replicas</li>
-      <li>Toy-like Objects with Intent</li>
-    </ul>
-    <p><a href="#">🔁 View <em>Other</em> Categories</a></p>
+  <div class="live-counter">
+    <span id="watching-count">82</span> people watching this page right now*
   </div>
 
-  <div class="box-section">
-    <div class="title">Clearance Memories</div>
-    <p>These are the items that didn’t belong… and now they’re looking for a home.</p>
-    <p>Low prices. Lower explanations.</p>
-    <p>✦ Today’s Feature: “Hypercolor Marshmallow Spool” – 89% off</p>
-  </div>
+  <footer>
+    © 1999–2025 Huxmark. All rights reversed. You are now legally part of the ecosystem.
+  </footer>
 
-  <div class="box-section">
-    <div class="title">OPT-IN MAGICKS</div>
-    <ul>
-      <li>Predictive Suggestion Engine™</li>
-      <li>Manual Tracking Override</li>
-      <li>Quantum Cart Persistence</li>
-      <li>Emotional Receipt Logging (BETA)</li>
-    </ul>
-  </div>
-
-  <div class="box-section full">
-    <div class="title">Algorithmically Endorsed Impressions™</div>
-    <ul>
-      <li>❖ People who saw this also reported vivid dreams</li>
-      <li>❖ Top Picks from the Feedback Loop™</li>
-      <li>❖ Back in stock: Smiling Mirror (Caution Advised)</li>
-      <li>❖ Hyper-Click Bundles for the Passive Aggressive Shopper</li>
-      <li>❖ NEW: “The Bundle That Asks Questions” – now 2% off</li>
-    </ul>
-  </div>
-</div>
-
-<div class="live-counter">
-  <span id="watching-count">82</span> people watching this page right now*
-</div>
-
-<div id="chat-toggle">Chat</div>
-<div id="chat-box">
-  <p><strong>Special Deal:</strong> Talk to a representative now!</p>
-  <p>[Chat interface coming soon]</p>
-</div>
-
-<footer>
-  © 1999–2025 Huxmark. All rights reversed. <a href="/huxspin" style="color:#aaa; text-decoration:none">.</a>
-</footer>
-
-<script>
-  const counter = document.getElementById('watching-count');
-  setInterval(() => {
-    const fluctuation = Math.floor(Math.random() * 11 - 5);
-    let current = parseInt(counter.textContent);
-    current = Math.max(1, current + fluctuation);
-    counter.textContent = current;
-  }, Math.floor(Math.random() * 2000) + 3000);
-
-  const chatToggle = document.getElementById('chat-toggle');
-  const chatBox = document.getElementById('chat-box');
-
-  chatToggle.addEventListener('click', () => {
-    chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
-  });
-</script>
+  <script>
+    const counter = document.getElementById('watching-count');
+    setInterval(() => {
+      const fluctuation = Math.floor(Math.random() * 11 - 5);
+      let current = parseInt(counter.textContent);
+      current = Math.max(1, current + fluctuation);
+      counter.textContent = current;
+    }, Math.floor(Math.random() * 2000) + 3000);
+  </script>
+</body>
+</html>
