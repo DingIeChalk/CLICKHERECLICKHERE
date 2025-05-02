@@ -145,4 +145,86 @@
     <a href="/privacy" title="Just trust us">Trust Procedures</a>
   </nav>
 
-  <!-- content continues unchanged -->
+  <div class="grid-layout">
+  <div class="box-section">
+    <div class="title">Welcome, Conscious Consumer</div>
+    <p><strong>What is Huxmark?</strong><br> A curated experience designed specifically for your pattern-recognition tendencies.</p>
+    <p><strong>How do I join?</strong><br> You're already participating. (Don’t worry, this is normal.)</p>
+    <p><strong>Is it free?</strong><br> Only in the ways that matter. Not in the ways that count.</p>
+  </div>
+
+  <div class="box-section">
+    <div class="title">Departments of Interest</div>
+    <ul>
+      <li>Alternate Apparel</li>
+      <li>Retroactive Technology</li>
+      <li>Nutritional Experiments</li>
+      <li>Medicinal Whispers</li>
+      <li>Domestic Oddities</li>
+      <li>Sonic Enhancers</li>
+      <li>Work Simulation Tools</li>
+      <li>Spectator Sports Replicas</li>
+      <li>Toy-like Objects with Intent</li>
+    </ul>
+    <p><a href="#">🔁 View <em>Other</em> Categories</a></p>
+  </div>
+
+  <div class="box-section">
+    <div class="title">Clearance Memories</div>
+    <p>These are the items that didn’t belong… and now they’re looking for a home.</p>
+    <p>Low prices. Lower explanations.</p>
+    <p>✦ Today’s Feature: “Hypercolor Marshmallow Spool” – 89% off</p>
+  </div>
+
+  <div class="box-section">
+    <div class="title">OPT-IN MAGICKS</div>
+    <ul>
+      <li>Predictive Suggestion Engine™</li>
+      <li>Manual Tracking Override</li>
+      <li>Quantum Cart Persistence</li>
+      <li>Emotional Receipt Logging (BETA)</li>
+    </ul>
+  </div>
+
+  <div class="box-section full">
+    <div class="title">Algorithmically Endorsed Impressions™</div>
+    <ul>
+      <li>❖ People who saw this also reported vivid dreams</li>
+      <li>❖ Top Picks from the Feedback Loop™</li>
+      <li>❖ Back in stock: Smiling Mirror (Caution Advised)</li>
+      <li>❖ Hyper-Click Bundles for the Passive Aggressive Shopper</li>
+      <li>❖ NEW: “The Bundle That Asks Questions” – now 2% off</li>
+    </ul>
+  </div>
+</div>
+
+<div class="live-counter">
+  <span id="watching-count">82</span> people watching this page right now*
+</div>
+
+<div id="chat-toggle">Chat</div>
+<div id="chat-box">
+  <p><strong>Special Deal:</strong> Talk to a representative now!</p>
+  <p>[Chat interface coming soon]</p>
+</div>
+
+<footer>
+  © 1999–2025 Huxmark. All rights reversed. <a href="/huxspin" style="color:#aaa; text-decoration:none">.</a>
+</footer>
+
+<script>
+  const counter = document.getElementById('watching-count');
+  setInterval(() => {
+    const fluctuation = Math.floor(Math.random() * 11 - 5);
+    let current = parseInt(counter.textContent);
+    current = Math.max(1, current + fluctuation);
+    counter.textContent = current;
+  }, Math.floor(Math.random() * 2000) + 3000);
+
+  const chatToggle = document.getElementById('chat-toggle');
+  const chatBox = document.getElementById('chat-box');
+
+  chatToggle.addEventListener('click', () => {
+    chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
+  });
+</script>
