@@ -1,94 +1,258 @@
-<div class="product-section">
-  <h2>Trending in Pocket Dimensions</h2>
-  <div class="product-grid-wrapper">
-    <button class="scroll-button left" onclick="scrollGrid(-1)" aria-label="Scroll Left">&lt;</button>
-    <div class="product-grid" id="productGrid">
-      <div class="product">
-        <p><strong>Partial Key Fragment</strong></p>
-        <p>$12.00</p>
-      </div>
-      <div class="product">
-        <p><strong>Looping Watch (May Not Stop)</strong></p>
-        <p>$89.99</p>
-      </div>
-      <div class="product">
-        <p><strong>Unsigned Letter (Postmarked Tomorrow)</strong></p>
-        <p>$6.66</p>
-      </div>
-      <div class="product">
-        <p><strong>Inverted Mug (Liquid-Rising)</strong></p>
-        <p>$14.44</p>
-      </div>
-      <div class="product">
-        <p><strong>Folded Mirror (Shows the Room Behind)</strong></p>
-        <p>$21.99</p>
-      </div>
-      <div class="product">
-        <p><strong>Shrinking Box (Returns Larger)</strong></p>
-        <p>$44.00</p>
-      </div>
-      <div class="product">
-        <p><strong>Receipt for Item Never Bought</strong></p>
-        <p>$0.00</p>
-      </div>
-      <div class="product">
-        <p><strong>Coin That Vanishes on Payment</strong></p>
-        <p>$2.22</p>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huxmark - Your Personal Web Shopping Community*</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Verdana', sans-serif;
+    }
+    body {
+      background-color: #f6e46a;
+      color: #000;
+    }
+    header {
+      background-color: #334f43;
+      color: #fff;
+      padding: 12px;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      border-bottom: 4px solid #000;
+    }
+    .utility-bar {
+      background-color: #fff;
+      padding: 4px 12px;
+      font-size: 0.85em;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #aaa;
+    }
+    .utility-bar a {
+      margin: 0 6px;
+      text-decoration: underline;
+      color: #333;
+    }
+    nav {
+      background: #224632;
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      gap: 20px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      gap: 10px;
+    }
+    .search-bar input[type="text"] {
+      padding: 8px;
+      width: 40%;
+      border: 2px inset #999;
+      font-size: 1em;
+    }
+    .search-bar select {
+      padding: 8px;
+      font-size: 1em;
+    }
+    .search-bar button {
+      padding: 8px 16px;
+      font-weight: bold;
+      background: #3366cc;
+      color: white;
+      border: 2px outset #666;
+    }
+    .hero {
+      margin: 30px auto;
+      background: purple;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      width: 90%;
+      max-width: 1000px;
+      font-size: 1.5em;
+      border: 3px double white;
+    }
+    .category-nav {
+      margin: 10px auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 0.95em;
+      background: #fffbe6;
+      padding: 10px;
+      border-top: 2px dashed #333;
+      border-bottom: 2px dashed #333;
+    }
+    .category-nav a {
+      text-decoration: underline;
+      color: #333;
+    }
+    .product-section {
+      padding: 20px;
+      background-color: #f6e46a;
+    }
+    .product-grid-wrapper {
+      width: 100%;
+      position: relative;
+    }
+    .product-grid {
+      display: flex;
+      overflow-x: auto;
+      gap: 2vw;
+      padding: 1vw 2vw;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+    }
+    .product {
+      background: white;
+      border: 1px solid #aaa;
+      padding: 1vw;
+      min-width: 240px;
+      flex: 0 0 auto;
+      text-align: center;
+      font-size: 1em;
+      scroll-snap-align: start;
+    }
+    .scroll-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: #224632;
+      color: white;
+      font-weight: bold;
+      font-size: 1.5em;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .scroll-button.left { left: 0; }
+    .scroll-button.right { right: 0; }
+    .footer {
+      margin-top: 30px;
+      background-color: #ccc;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+  <div class="utility-bar">
+    <div>
+      Hi! <a href="#">Sign in</a> or <a href="#">register</a>
     </div>
-    <button class="scroll-button right" onclick="scrollGrid(1)" aria-label="Scroll Right">&gt;</button>
+    <div>
+      <a href="#">Daily Deals</a>
+      <a href="#">Gift Center</a>
+      <a href="#">Help</a>
+    </div>
   </div>
-</div>
 
-<style>
-  .product-section {
-    padding: 20px;
-    background-color: #f6e46a;
-  }
-  .product-grid-wrapper {
-    width: 100%;
-    position: relative;
-  }
-  .product-grid {
-    display: flex;
-    overflow-x: auto;
-    gap: 2vw;
-    padding: 1vw 2vw;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-  }
-  .product {
-    background: white;
-    border: 1px solid #aaa;
-    padding: 1vw;
-    min-width: 240px;
-    flex: 0 0 auto;
-    text-align: center;
-    font-size: 1em;
-    scroll-snap-align: start;
-  }
-  .scroll-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: #224632;
-    color: white;
-    font-weight: bold;
-    font-size: 1.5em;
-    border: none;
-    cursor: pointer;
-    z-index: 10;
-  }
-  .scroll-button.left { left: 0; }
-  .scroll-button.right { right: 0; }
-</style>
-<script>
-  function scrollGrid(direction) {
-    const grid = document.getElementById('productGrid');
-    const scrollAmount = grid.clientWidth * 0.4;
-    grid.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-  }
-</script>
+  <header>huxmark</header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Electronics</a>
+    <a href="#">Collectibles</a>
+    <a href="#">Home & Garden</a>
+    <a href="#">Apparel</a>
+    <a href="#">Toys</a>
+    <a href="#">More</a>
+  </nav>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Search for anomalies...">
+    <select>
+      <option>All Realities</option>
+      <option>Devices</option>
+      <option>Objects</option>
+    </select>
+    <button>Observe</button>
+  </div>
+
+  <div class="hero">
+    <strong>“Legends misplaced, icons reissued.”</strong><br>
+    Today’s top deal appears below (if you’re meant to see it).
+  </div>
+
+  <div class="category-nav">
+    <a href="#">Psychic Tools</a>
+    <a href="#">Portable Holes</a>
+    <a href="#">Thermal Secrets</a>
+    <a href="#">Worn Realities</a>
+    <a href="#">Unlisted Objects</a>
+  </div>
+
+  <div class="product-section">
+    <h2>Trending in Pocket Dimensions</h2>
+    <div class="product-grid-wrapper">
+      <button class="scroll-button left" onclick="scrollGrid(-1)" aria-label="Scroll Left">&lt;</button>
+      <div class="product-grid" id="productGrid">
+        <div class="product">
+          <p><strong>Partial Key Fragment</strong></p>
+          <p>$12.00</p>
+        </div>
+        <div class="product">
+          <p><strong>Looping Watch (May Not Stop)</strong></p>
+          <p>$89.99</p>
+        </div>
+        <div class="product">
+          <p><strong>Unsigned Letter (Postmarked Tomorrow)</strong></p>
+          <p>$6.66</p>
+        </div>
+        <div class="product">
+          <p><strong>Inverted Mug (Liquid-Rising)</strong></p>
+          <p>$14.44</p>
+        </div>
+        <div class="product">
+          <p><strong>Folded Mirror (Shows the Room Behind)</strong></p>
+          <p>$21.99</p>
+        </div>
+        <div class="product">
+          <p><strong>Shrinking Box (Returns Larger)</strong></p>
+          <p>$44.00</p>
+        </div>
+        <div class="product">
+          <p><strong>Receipt for Item Never Bought</strong></p>
+          <p>$0.00</p>
+        </div>
+        <div class="product">
+          <p><strong>Coin That Vanishes on Payment</strong></p>
+          <p>$2.22</p>
+        </div>
+      </div>
+      <button class="scroll-button right" onclick="scrollGrid(1)" aria-label="Scroll Right">&gt;</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 1999–2025 Huxmark. All rights reversed.
+  </div>
+
+  <script>
+    function scrollGrid(direction) {
+      const grid = document.getElementById('productGrid');
+      const scrollAmount = grid.clientWidth * 0.4;
+      grid.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
