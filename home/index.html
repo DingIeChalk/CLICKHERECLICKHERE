@@ -40,38 +40,21 @@
       text-decoration: none;
       font-weight: bold;
     }
-    .container {
-      display: flex;
-      flex: 1;
+    section {
+      padding: 30px 10%;
       width: 100%;
-      flex-grow: 1;
     }
-    .sidebar, .main, .features {
-      padding: 10px;
-      min-height: 100%;
-    }
-    .sidebar {
-      flex: 1;
-      background-color: #aac4a4;
-    }
-    .main {
-      flex: 2;
-      background-color: #d5c144;
-    }
-    .features {
-      flex: 1;
-      background-color: #c0c0ff;
-    }
-    .box {
+    .categories, .bargains, .featured, .welcome, .cool-features {
       background-color: #fffbe6;
       border: 2px dashed #000;
-      margin: 10px 0;
-      padding: 10px;
+      margin: 20px 0;
+      padding: 20px;
     }
     .title {
       font-weight: bold;
-      font-size: 1.2em;
+      font-size: 1.5em;
       text-transform: uppercase;
+      margin-bottom: 10px;
     }
     .live-counter {
       text-align: center;
@@ -124,56 +107,53 @@
     <a href="/privacy">Privacy + Terms</a>
   </nav>
 
-  <div class="container">
-    <div class="sidebar">
-      <div class="title">Categories</div>
-      <ul>
-        <li>Apparel</li>
-        <li>Electronics</li>
-        <li>Food & Drink</li>
-        <li>Health</li>
-        <li>Home & Garden</li>
-        <li>Music</li>
-        <li>Office</li>
-        <li>Sports</li>
-        <li>Toys & Games</li>
-      </ul>
-      <div class="box">
-        <a href="/feedback-wheel">🌀 Feedback Wheel</a>
-      </div>
-    </div>
+  <section class="categories">
+    <div class="title">Categories</div>
+    <ul>
+      <li>Apparel</li>
+      <li>Electronics</li>
+      <li>Food & Drink</li>
+      <li>Health</li>
+      <li>Home & Garden</li>
+      <li>Music</li>
+      <li>Office</li>
+      <li>Sports</li>
+      <li>Toys & Games</li>
+    </ul>
+    <p><a href="/feedback-wheel">🌀 Feedback Wheel</a></p>
+  </section>
 
-    <div class="main">
-      <div class="box"><span class="title">Bargains!</span><br />Take advantage now!</div>
-      <div class="box">
-        <span class="title">Featured</span>
-        <ul>
-          <li><a href="#">Doorbuster Apparel Values</a></li>
-          <li><a href="#">Super Savings in Electronics</a></li>
-          <li><a href="#">Top Summer Drink Picks</a></li>
-          <li><a href="#">Spruce Up Your Home</a></li>
-          <li><a href="#">Find Gifts for All Ages</a></li>
-        </ul>
-      </div>
-    </div>
+  <section class="bargains">
+    <div class="title">Bargains!</div>
+    <p>Take advantage now!</p>
+  </section>
 
-    <div class="features">
-      <div class="box">
-        <span class="title">Welcome</span><br />
-        <a href="/about">What is Huxmark?</a><br />
-        <a href="/faq">How do I join?</a><br />
-        <a href="/faq">Is it free?</a>
-      </div>
-      <div class="box">
-        <span class="title">Cool Features</span>
-        <ul>
-          <li>Save searches</li>
-          <li>Track orders</li>
-          <li>Get special offers!</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <section class="featured">
+    <div class="title">Featured</div>
+    <ul>
+      <li><a href="#">Doorbuster Apparel Values</a></li>
+      <li><a href="#">Super Savings in Electronics</a></li>
+      <li><a href="#">Top Summer Drink Picks</a></li>
+      <li><a href="#">Spruce Up Your Home</a></li>
+      <li><a href="#">Find Gifts for All Ages</a></li>
+    </ul>
+  </section>
+
+  <section class="welcome">
+    <div class="title">Welcome</div>
+    <p><a href="/about">What is Huxmark?</a></p>
+    <p><a href="/faq">How do I join?</a></p>
+    <p><a href="/faq">Is it free?</a></p>
+  </section>
+
+  <section class="cool-features">
+    <div class="title">Cool Features</div>
+    <ul>
+      <li>Save searches</li>
+      <li>Track orders</li>
+      <li>Get special offers!</li>
+    </ul>
+  </section>
 
   <div class="live-counter">
     <span id="watching-count">82</span> people watching this page right now*
