@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Huxmark - Your Personal Web Shopping Community*</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       background-color: #d5c144;
       font-family: 'Verdana', sans-serif;
@@ -35,16 +36,15 @@
     }
     .container {
       display: flex;
-      flex-wrap: wrap;
-      padding: 10px;
+      flex-wrap: nowrap;
+      width: 100vw;
+      height: auto;
     }
     .sidebar, .main, .features {
       padding: 10px;
-      box-sizing: border-box;
     }
     .sidebar {
       flex: 1;
-      min-width: 180px;
       background-color: #aac4a4;
     }
     .main {
@@ -53,7 +53,6 @@
     }
     .features {
       flex: 1;
-      min-width: 200px;
       background-color: #c0c0ff;
     }
     .box {
@@ -74,12 +73,30 @@
       font-size: 0.85em;
       padding: 8px;
     }
-    .minimized-chat {
-      font-size: 0.85em;
-      background: #bccddf;
-      padding: 5px;
-      text-align: left;
-      border: 2px inset #555;
+    #chat-toggle {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: #222;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 999;
+    }
+    #chat-box {
+      display: none;
+      position: fixed;
+      bottom: 50px;
+      right: 10px;
+      width: 300px;
+      height: 400px;
+      background-color: #111;
+      color: #fff;
+      border: 2px solid #555;
+      padding: 10px;
+      z-index: 999;
     }
     footer {
       text-align: center;
@@ -114,9 +131,6 @@
         <li>Toys & Games</li>
       </ul>
       <div class="box">
-        <strong>82</strong> people watching this page right now*
-      </div>
-      <div class="box">
         <a href="/feedback-wheel">🌀 Feedback Wheel</a>
       </div>
     </div>
@@ -150,15 +164,42 @@
           <li>Get special offers!</li>
         </ul>
       </div>
-      <div class="minimized-chat">Chat – Special Deal ▾</div>
     </div>
   </div>
 
   <div class="live-counter">
-    82 people watching this page right now*
+    <span id="watching-count">82</span> people watching this page right now*
   </div>
+
+  <div id="chat-toggle">Chat</div>
+  <div id="chat-box">
+    <p><strong>Special Deal:</strong> Talk to a representative now!</p>
+    <p>[Chat interface coming soon]</p>
+  </div>
+
   <footer>
     © 1999-2025 Huxmark. All rights reversed. <a href="/huxspin" style="color:#aaa; text-decoration:none">.</a>
   </footer>
+
+  <script>
+    const counter = document.getElementById('watching-count');
+    setInterval(() => {
+      const fluctuation = Math.floor(Math.random() * 11 - 5); // -5 to +5
+      let current = parseInt(counter.textContent);
+      current = Math.max(1, current + fluctuation);
+      counter.textContent = current;
+    }, Math.floor(Math.random() * 2000) + 3000); // every 3–5s
+
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatBox = document.getElementById('chat-box');
+
+    chatToggle.addEventListener('click', () => {
+      if (chatBox.style.display === 'none') {
+        chatBox.style.display = 'block';
+      } else {
+        chatBox.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
