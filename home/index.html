@@ -41,13 +41,19 @@
       font-weight: bold;
     }
     section {
-      padding: 30px 10%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 30px 5%;
       width: 100%;
     }
-    .categories, .bargains, .featured, .welcome, .cool-features {
+    .box-section {
+      flex: 1 1 300px;
+      max-width: 500px;
       background-color: #fffbe6;
       border: 2px dashed #000;
-      margin: 20px 0;
       padding: 20px;
     }
     .title {
@@ -107,52 +113,54 @@
     <a href="/privacy">Privacy + Terms</a>
   </nav>
 
-  <section class="categories">
-    <div class="title">Categories</div>
-    <ul>
-      <li>Apparel</li>
-      <li>Electronics</li>
-      <li>Food & Drink</li>
-      <li>Health</li>
-      <li>Home & Garden</li>
-      <li>Music</li>
-      <li>Office</li>
-      <li>Sports</li>
-      <li>Toys & Games</li>
-    </ul>
-    <p><a href="/feedback-wheel">🌀 Feedback Wheel</a></p>
-  </section>
+  <section>
+    <div class="box-section">
+      <div class="title">Categories</div>
+      <ul>
+        <li>Apparel</li>
+        <li>Electronics</li>
+        <li>Food & Drink</li>
+        <li>Health</li>
+        <li>Home & Garden</li>
+        <li>Music</li>
+        <li>Office</li>
+        <li>Sports</li>
+        <li>Toys & Games</li>
+      </ul>
+      <p><a href="/feedback-wheel">🌀 Feedback Wheel</a></p>
+    </div>
 
-  <section class="bargains">
-    <div class="title">Bargains!</div>
-    <p>Take advantage now!</p>
-  </section>
+    <div class="box-section">
+      <div class="title">Bargains!</div>
+      <p>Take advantage now!</p>
+    </div>
 
-  <section class="featured">
-    <div class="title">Featured</div>
-    <ul>
-      <li><a href="#">Doorbuster Apparel Values</a></li>
-      <li><a href="#">Super Savings in Electronics</a></li>
-      <li><a href="#">Top Summer Drink Picks</a></li>
-      <li><a href="#">Spruce Up Your Home</a></li>
-      <li><a href="#">Find Gifts for All Ages</a></li>
-    </ul>
-  </section>
+    <div class="box-section">
+      <div class="title">Featured</div>
+      <ul>
+        <li><a href="#">Doorbuster Apparel Values</a></li>
+        <li><a href="#">Super Savings in Electronics</a></li>
+        <li><a href="#">Top Summer Drink Picks</a></li>
+        <li><a href="#">Spruce Up Your Home</a></li>
+        <li><a href="#">Find Gifts for All Ages</a></li>
+      </ul>
+    </div>
 
-  <section class="welcome">
-    <div class="title">Welcome</div>
-    <p><a href="/about">What is Huxmark?</a></p>
-    <p><a href="/faq">How do I join?</a></p>
-    <p><a href="/faq">Is it free?</a></p>
-  </section>
+    <div class="box-section">
+      <div class="title">Welcome</div>
+      <p><a href="/about">What is Huxmark?</a></p>
+      <p><a href="/faq">How do I join?</a></p>
+      <p><a href="/faq">Is it free?</a></p>
+    </div>
 
-  <section class="cool-features">
-    <div class="title">Cool Features</div>
-    <ul>
-      <li>Save searches</li>
-      <li>Track orders</li>
-      <li>Get special offers!</li>
-    </ul>
+    <div class="box-section">
+      <div class="title">Cool Features</div>
+      <ul>
+        <li>Save searches</li>
+        <li>Track orders</li>
+        <li>Get special offers!</li>
+      </ul>
+    </div>
   </section>
 
   <div class="live-counter">
