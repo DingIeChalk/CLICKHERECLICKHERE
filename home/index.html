@@ -10,12 +10,18 @@
       margin: 0;
       padding: 0;
       width: 100%;
+      min-height: 100%;
       height: 100%;
       font-family: 'Verdana', sans-serif;
     }
     body {
+      display: flex;
+      flex-direction: column;
       background-color: #f6e46a;
       color: #000;
+    }
+    main {
+      flex-grow: 1;
     }
     header {
       background-color: #334f43;
@@ -112,12 +118,9 @@
     }
     .product-grid {
       display: flex;
-      overflow-x: auto;
+      overflow-x: hidden;
       gap: 2vw;
       padding: 1vw 2vw;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      scrollbar-width: thin;
     }
     .product {
       background: white;
@@ -127,7 +130,6 @@
       flex: 0 0 auto;
       text-align: center;
       font-size: 1em;
-      scroll-snap-align: start;
     }
     .scroll-button {
       position: absolute;
@@ -146,7 +148,6 @@
     .scroll-button.left { left: 0; }
     .scroll-button.right { right: 0; }
     .footer {
-      margin-top: 30px;
       background-color: #ccc;
       text-align: center;
       padding: 10px;
@@ -178,80 +179,63 @@
     <a href="#">More</a>
   </nav>
 
-  <div class="search-bar">
-    <input type="text" placeholder="Search for anomalies...">
-    <select>
-      <option>All Realities</option>
-      <option>Devices</option>
-      <option>Objects</option>
-    </select>
-    <button>Observe</button>
-  </div>
-
-  <div class="hero">
-    <strong>“Legends misplaced, icons reissued.”</strong><br>
-    Today’s top deal appears below (if you’re meant to see it).
-  </div>
-
-  <div class="category-nav">
-    <a href="#">Psychic Tools</a>
-    <a href="#">Portable Holes</a>
-    <a href="#">Thermal Secrets</a>
-    <a href="#">Worn Realities</a>
-    <a href="#">Unlisted Objects</a>
-  </div>
-
-  <div class="product-section">
-    <h2>Trending in Pocket Dimensions</h2>
-    <div class="product-grid-wrapper">
-      <button class="scroll-button left" onclick="scrollGrid(-1)" aria-label="Scroll Left">&lt;</button>
-      <div class="product-grid" id="productGrid">
-        <div class="product">
-          <p><strong>Partial Key Fragment</strong></p>
-          <p>$12.00</p>
-        </div>
-        <div class="product">
-          <p><strong>Looping Watch (May Not Stop)</strong></p>
-          <p>$89.99</p>
-        </div>
-        <div class="product">
-          <p><strong>Unsigned Letter (Postmarked Tomorrow)</strong></p>
-          <p>$6.66</p>
-        </div>
-        <div class="product">
-          <p><strong>Inverted Mug (Liquid-Rising)</strong></p>
-          <p>$14.44</p>
-        </div>
-        <div class="product">
-          <p><strong>Folded Mirror (Shows the Room Behind)</strong></p>
-          <p>$21.99</p>
-        </div>
-        <div class="product">
-          <p><strong>Shrinking Box (Returns Larger)</strong></p>
-          <p>$44.00</p>
-        </div>
-        <div class="product">
-          <p><strong>Receipt for Item Never Bought</strong></p>
-          <p>$0.00</p>
-        </div>
-        <div class="product">
-          <p><strong>Coin That Vanishes on Payment</strong></p>
-          <p>$2.22</p>
-        </div>
-      </div>
-      <button class="scroll-button right" onclick="scrollGrid(1)" aria-label="Scroll Right">&gt;</button>
+  <main>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for anomalies...">
+      <select>
+        <option>All Realities</option>
+        <option>Devices</option>
+        <option>Objects</option>
+      </select>
+      <button>Observe</button>
     </div>
-  </div>
+
+    <div class="hero">
+      <strong>“Legends misplaced, icons reissued.”</strong><br>
+      Today’s top deal appears below (if you’re meant to see it).
+    </div>
+
+    <div class="category-nav">
+      <a href="#">Psychic Tools</a>
+      <a href="#">Portable Holes</a>
+      <a href="#">Thermal Secrets</a>
+      <a href="#">Worn Realities</a>
+      <a href="#">Unlisted Objects</a>
+    </div>
+
+    <div class="product-section">
+      <h2>Trending in Pocket Dimensions</h2>
+      <div class="product-grid-wrapper">
+        <button class="scroll-button left" onclick="scrollLoop(-1)" aria-label="Scroll Left">&lt;</button>
+        <div class="product-grid" id="productGrid">
+          <div class="product"><p><strong>Partial Key Fragment</strong></p><p>$12.00</p></div>
+          <div class="product"><p><strong>Looping Watch (May Not Stop)</strong></p><p>$89.99</p></div>
+          <div class="product"><p><strong>Unsigned Letter (Postmarked Tomorrow)</strong></p><p>$6.66</p></div>
+          <div class="product"><p><strong>Inverted Mug (Liquid-Rising)</strong></p><p>$14.44</p></div>
+          <div class="product"><p><strong>Folded Mirror (Shows the Room Behind)</strong></p><p>$21.99</p></div>
+          <div class="product"><p><strong>Shrinking Box (Returns Larger)</strong></p><p>$44.00</p></div>
+          <div class="product"><p><strong>Receipt for Item Never Bought</strong></p><p>$0.00</p></div>
+          <div class="product"><p><strong>Coin That Vanishes on Payment</strong></p><p>$2.22</p></div>
+        </div>
+        <button class="scroll-button right" onclick="scrollLoop(1)" aria-label="Scroll Right">&gt;</button>
+      </div>
+    </div>
+  </main>
 
   <div class="footer">
     © 1999–2025 Huxmark. All rights reversed.
   </div>
 
   <script>
-    function scrollGrid(direction) {
+    function scrollLoop(direction) {
       const grid = document.getElementById('productGrid');
-      const scrollAmount = grid.clientWidth * 0.4;
-      grid.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+      if (direction === 1) {
+        const first = grid.firstElementChild;
+        grid.appendChild(first);
+      } else {
+        const last = grid.lastElementChild;
+        grid.insertBefore(last, grid.firstElementChild);
+      }
     }
   </script>
 </body>
