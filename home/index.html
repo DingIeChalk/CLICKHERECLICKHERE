@@ -107,10 +107,10 @@
     }
     .product-grid {
       display: flex;
-      flex-wrap: nowrap;
       overflow-x: auto;
       gap: 10px;
       padding: 10px 0;
+      scroll-snap-type: x mandatory;
     }
     .product {
       background: white;
@@ -121,13 +121,10 @@
       flex: 0 0 auto;
       text-align: center;
       font-size: 0.85em;
+      scroll-snap-align: start;
     }
     .product img {
-      width: 100%;
-      height: auto;
-      display: block;
-      margin-bottom: 8px;
-      border: 1px solid #ccc;
+      display: none;
     }
     .footer {
       margin-top: 30px;
@@ -189,24 +186,20 @@
     <h2>Trending in Pocket Dimensions</h2>
     <div class="product-grid">
       <div class="product">
-        <img src="https://via.placeholder.com/150" alt="Mysterious Item" />
-        <p>Partial Key Fragment</p>
-        <p><strong>$12.00</strong></p>
+        <p><strong>Partial Key Fragment</strong></p>
+        <p>$12.00</p>
       </div>
       <div class="product">
-        <img src="https://via.placeholder.com/150" alt="Looping Watch" />
-        <p>Looping Watch (May Not Stop)</p>
-        <p><strong>$89.99</strong></p>
+        <p><strong>Looping Watch (May Not Stop)</strong></p>
+        <p>$89.99</p>
       </div>
       <div class="product">
-        <img src="https://via.placeholder.com/150" alt="Unsigned Letter" />
-        <p>Unsigned Letter (Postmarked Tomorrow)</p>
-        <p><strong>$6.66</strong></p>
+        <p><strong>Unsigned Letter (Postmarked Tomorrow)</strong></p>
+        <p>$6.66</p>
       </div>
       <div class="product">
-        <img src="https://via.placeholder.com/150" alt="Inverted Mug" />
-        <p>Inverted Mug (Liquid-Rising)</p>
-        <p><strong>$14.44</strong></p>
+        <p><strong>Inverted Mug (Liquid-Rising)</strong></p>
+        <p>$14.44</p>
       </div>
     </div>
   </div>
