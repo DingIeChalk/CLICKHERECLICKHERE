@@ -105,27 +105,43 @@
     .product-section {
       padding: 20px 5%;
     }
+    .product-grid-wrapper {
+      position: relative;
+    }
     .product-grid {
       display: flex;
       overflow-x: auto;
-      gap: 10px;
+      gap: 20px;
       padding: 10px 0;
       scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
     }
     .product {
       background: white;
       border: 1px solid #aaa;
       padding: 10px;
-      min-width: 160px;
-      max-width: 180px;
+      min-width: 200px;
       flex: 0 0 auto;
       text-align: center;
-      font-size: 0.85em;
+      font-size: 1em;
       scroll-snap-align: start;
     }
-    .product img {
-      display: none;
+    .scroll-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: #224632;
+      color: white;
+      font-weight: bold;
+      font-size: 1.5em;
+      border: none;
+      cursor: pointer;
+      z-index: 10;
     }
+    .scroll-button.left { left: -20px; }
+    .scroll-button.right { right: -20px; }
     .footer {
       margin-top: 30px;
       background-color: #ccc;
@@ -184,28 +200,40 @@
 
   <div class="product-section">
     <h2>Trending in Pocket Dimensions</h2>
-    <div class="product-grid">
-      <div class="product">
-        <p><strong>Partial Key Fragment</strong></p>
-        <p>$12.00</p>
+    <div class="product-grid-wrapper">
+      <button class="scroll-button left" onclick="scrollGrid(-1)">&lt;</button>
+      <div class="product-grid" id="productGrid">
+        <div class="product">
+          <p><strong>Partial Key Fragment</strong></p>
+          <p>$12.00</p>
+        </div>
+        <div class="product">
+          <p><strong>Looping Watch (May Not Stop)</strong></p>
+          <p>$89.99</p>
+        </div>
+        <div class="product">
+          <p><strong>Unsigned Letter (Postmarked Tomorrow)</strong></p>
+          <p>$6.66</p>
+        </div>
+        <div class="product">
+          <p><strong>Inverted Mug (Liquid-Rising)</strong></p>
+          <p>$14.44</p>
+        </div>
       </div>
-      <div class="product">
-        <p><strong>Looping Watch (May Not Stop)</strong></p>
-        <p>$89.99</p>
-      </div>
-      <div class="product">
-        <p><strong>Unsigned Letter (Postmarked Tomorrow)</strong></p>
-        <p>$6.66</p>
-      </div>
-      <div class="product">
-        <p><strong>Inverted Mug (Liquid-Rising)</strong></p>
-        <p>$14.44</p>
-      </div>
+      <button class="scroll-button right" onclick="scrollGrid(1)">&gt;</button>
     </div>
   </div>
 
   <div class="footer">
     © 1999–2025 Huxmark. All rights reversed.
   </div>
+
+  <script>
+    function scrollGrid(direction) {
+      const grid = document.getElementById('productGrid');
+      const scrollAmount = 220;
+      grid.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+    }
+  </script>
 </body>
 </html>
