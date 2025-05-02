@@ -12,7 +12,6 @@
       padding: 0;
       width: 100%;
       min-height: 100%;
-      height: 100%;
       font-family: 'Carter One', cursive;
     }
     body {
@@ -32,18 +31,6 @@
       font-size: 2em;
       font-weight: bold;
       border-bottom: 4px solid #000;
-    }
-    .utility-bar {
-      background-color: #fff;
-    }
-    .product:hover {
-      transform: translateY(-6px) scale(1.05);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-    .utility-bar a {
-      margin: 0 6px;
-      text-decoration: underline;
-      color: #333;
     }
     nav {
       background: #224632;
@@ -136,10 +123,20 @@
       padding: 1vw;
       min-width: 240px;
       max-width: 240px;
+      height: 320px;
       flex: 0 0 auto;
       text-align: center;
       font-size: 1em;
-      background-color: #fff;
+    }
+    .product img {
+      width: 90%;
+      height: 120px;
+      object-fit: cover;
+      margin: 5px auto;
+    }
+    .product:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
     .scroll-button {
       position: absolute;
@@ -163,59 +160,22 @@
       padding: 10px;
       font-size: 0.8em;
     }
-    @media (max-width: 768px) {
-    .utility-bar, nav {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    nav {
-      gap: 10px;
-    }
-    .search-bar {
-      flex-direction: column;
-      align-items: center;
-    }
-    .search-bar input[type="text"],
-    .search-bar select,
-    .search-bar button {
-      width: 90%;
-      margin: 5px 0;
-    }
-    .product-grid {
-      gap: 4vw;
-      padding: 2vw;
-    }
-    .product {
-      min-width: 70vw;
-      max-width: 70vw;
-    }
-    .scroll-button {
-      width: 32px;
-      height: 32px;
-      font-size: 1.2em;
-    }
-  }
-</style>
+  </style>
 </head>
 <body>
-  
-    
-  </div>
-
-  <header>HUXMARK<sup style="font-size: 0.5em; vertical-align: super;">™</sup></header>
-
-  <nav>
-    <a href="#">[HOME]</a>
-    <a href="#">[ELECTRONICS]</a>
-    <a href="#">[COLLECTIBLES]</a>
-    <a href="#">[HOME & GARDEN]</a>
-    <a href="#">[APPAREL]</a>
-    <a href="#">[TOYS]</a>
-    <a href="#">[MORE]</a>
-  </nav>
-
   <main>
+    <header>HUXMARK<sup style="font-size: 0.5em; vertical-align: super;">™</sup></header>
+
+    <nav>
+      <a href="#">[HOME]</a>
+      <a href="#">[ELECTRONICS]</a>
+      <a href="#">[COLLECTIBLES]</a>
+      <a href="#">[HOME & GARDEN]</a>
+      <a href="#">[APPAREL]</a>
+      <a href="#">[TOYS]</a>
+      <a href="#">[MORE]</a>
+    </nav>
+
     <div class="search-bar">
       <input type="text" placeholder="[SEARCH FOR ANOMALIES...]">
       <select>
@@ -235,78 +195,94 @@
     </div>
 
     <div class="hero">
-      <strong>[“LEGENDS MISPLACED, ICONS REISSUED.”]</strong><br />
-      Today’s top deal appears below (if you’re meant to see it).
+      <strong>["LEGENDS MISPLACED, ICONS REISSUED."]</strong><br>
+      [TODAY’S TOP DEAL APPEARS BELOW (IF YOU’RE MEANT TO SEE IT).]
     </div>
 
-    <div class="product-section">
-      <h2>[Trending in Pocket Dimensions]</h2>
+    <section class="product-section">
+      <h2>[TRENDING IN POCKET DIMENSIONS]</h2>
       <div class="product-grid-wrapper">
-        <button class="scroll-button left" onclick="scrollLoop(-1)" aria-label="Scroll Left">&lt;</button>
-        <div class="product-grid" id="productGrid">
-          <div class="product"><p><strong>[Partial Key Fragment]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[LOOPING WATCH] (MAY NOT STOP)</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[UNSIGNED LETTER] (POSTMARKED TOMORROW)</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[INVERTED MUG] (LIQUID-RISING)</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[FOLDED MIRROR] (SHOWS THE ROOM BEHIND)</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[SHRINKING BOX] (RETURNS LARGER)</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Receipt for Item Never Bought]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Coin That Vanishes on Payment]</strong></p><p>[OFFER UP!]</p></div>
+        <button class="scroll-button left" onclick="scrollLoop('grid1', -1)">&lt;</button>
+        <div class="product-grid" id="grid1">
+          <div class="product">
+            <div>[PARTIAL KEY FRAGMENT]</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/partial%20key.png" alt="Partial Key Fragment">
+            <div>[OFFER UP!]</div>
+          </div>
+          <div class="product">
+            <div>[LOOPING WATCH] (MAY NOT STOP)</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/looping%20clock.png" alt="Looping Watch">
+            <div>[OFFER UP!]</div>
+          </div>
+          <div class="product">
+            <div>[UNSIGNED LETTER] (POSTMARKED TOMORROW)</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/unsigned%20letter.png" alt="Unsigned Letter">
+            <div>[OFFER UP!]</div>
+          </div>
+          <div class="product">
+            <div>[INVERTED MUG] (LIQUID-RISING)</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mug.png" alt="Inverted Mug">
+            <div>[OFFER UP!]</div>
+          </div>
+          <div class="product">
+            <div>[FOLDED MIRROR] (SHOWS THE ROOM BEHIND)</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mirror.png" alt="Folded Mirror">
+            <div>[OFFER UP!]</div>
+          </div>
+          <div class="product">
+            <div>[SHRINKING BOX] (RETURNS LARGER)</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/box.png" alt="Shrinking Box">
+            <div>[OFFER UP!]</div>
+          </div>
+          <div class="product">
+            <div>[RECEIPT FOR ITEM NEVER BOUGHT]</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/recipt.png" alt="Receipt">
+            <div>[OFFER UP!]</div>
+          </div>
+          <div class="product">
+            <div>[COIN THAT VANISHES ON PAYMENT]</div>
+            <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/coin.png" alt="Coin">
+            <div>[OFFER UP!]</div>
+          </div>
         </div>
-        <button class="scroll-button right" onclick="scrollLoop(1)" aria-label="Scroll Right">&gt;</button>
+        <button class="scroll-button right" onclick="scrollLoop('grid1', 1)">&gt;</button>
       </div>
+    </section>
+  <section class="product-section">
+  <h2>[WORN INVENTORY]</h2>
+  <div class="product-grid-wrapper">
+    <button class="scroll-button left" onclick="scrollLoop('grid2', -1)">&lt;</button>
+    <div class="product-grid" id="grid2">
+      <div class="product"><div>[VEST THAT REVERSES TIME]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[COAT WITH HIDDEN POCKETS] (INFINITE)</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[INVERTED SOCKS]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[BELT OF CIRCULAR LOGIC]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[UNLACEABLE SHOES]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
     </div>
+    <button class="scroll-button right" onclick="scrollLoop('grid2', 1)">&gt;</button>
+  </div>
+</section>
 
-    <div class="product-section">
-      <h2>[Worn Inventory]</h2>
-      <div class="product-grid-wrapper">
-        <button class="scroll-button left" onclick="scrollLoopAlt(-1, 'productGrid2')" aria-label="Scroll Left">&lt;</button>
-        <div class="product-grid" id="productGrid2">
-          <div class="product"><p><strong>[Vest That Reverses Time]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[COAT WITH HIDDEN POCKETS] (INFINITE)</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Inverted Socks]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Belt of Circular Logic]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Unlaceable Shoes]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Hat That Whispers Secrets]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Mirror-Lined Coat]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Scarf of Endless Length]</strong></p><p>[OFFER UP!]</p></div>
-        </div>
-        <button class="scroll-button right" onclick="scrollLoopAlt(1, 'productGrid2')" aria-label="Scroll Right">&gt;</button>
-      </div>
+<section class="product-section">
+  <h2>[UNAUTHORIZED OBJECTS]</h2>
+  <div class="product-grid-wrapper">
+    <button class="scroll-button left" onclick="scrollLoop('grid3', -1)">&lt;</button>
+    <div class="product-grid" id="grid3">
+      <div class="product"><div>[UNNUMBERED DICE]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[PHONE THAT ONLY CALLS OUT]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[FORK WITH NO PRONGS]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[ENDLESS RULER] (NO MARKS)</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
+      <div class="product"><div>[TIN CAN LABELED "DO NOT OPEN"]</div><div style="height:120px;"></div><div>[OFFER UP!]</div></div>
     </div>
-
-    <div class="product-section">
-      <h2>[Unauthorized Objects]</h2>
-      <div class="product-grid-wrapper">
-        <button class="scroll-button left" onclick="scrollLoopAlt(-1, 'productGrid3')" aria-label="Scroll Left">&lt;</button>
-        <div class="product-grid" id="productGrid3">
-          <div class="product"><p><strong>[Flashlight That Reveals Lies]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Glass Cube That Hums]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Book of Unreadable Text]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Notebook That Writes Back]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Phone That Only Calls Out]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Fork With No Prongs]</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[ENDLESS RULER] (NO MARKS)</strong></p><p>[OFFER UP!]</p></div>
-          <div class="product"><p><strong>[Tin Can Labeled "DO NOT OPEN"]</strong></p><p>[OFFER UP!]</p></div>
-        </div>
-        <button class="scroll-button right" onclick="scrollLoopAlt(1, 'productGrid3')" aria-label="Scroll Right">&gt;</button>
-      </div>
-    </div>
-
-  </main>
-
+    <button class="scroll-button right" onclick="scrollLoop('grid3', 1)">&gt;</button>
+  </div>
+</section>
+</main>
+  <footer class="footer">
+    © 1999–2025 HUXMARK. All rights reversed.
+  </footer>
   <script>
-    function scrollLoop(direction) {
-      const grid = document.getElementById('productGrid');
-      if (direction === 1) {
-        const first = grid.firstElementChild;
-        grid.appendChild(first);
-      } else {
-        const last = grid.lastElementChild;
-        grid.insertBefore(last, grid.firstElementChild);
-      }
-    }
-    function scrollLoopAlt(direction, id) {
+    function scrollLoop(id, direction) {
       const grid = document.getElementById(id);
       if (direction === 1) {
         const first = grid.firstElementChild;
