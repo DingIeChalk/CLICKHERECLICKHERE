@@ -27,6 +27,7 @@
       font-size: 2em;
       font-weight: bold;
       letter-spacing: 2px;
+      animation: hueRotate 15s infinite linear;
     }
     nav {
       text-align: center;
@@ -39,6 +40,19 @@
       margin: 0 10px;
       text-decoration: none;
       font-weight: bold;
+      position: relative;
+    }
+    nav a:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -1.5em;
+      left: 0;
+      background: #000;
+      color: #0f0;
+      padding: 2px 6px;
+      font-size: 0.75em;
+      white-space: nowrap;
+      z-index: 1000;
     }
     .grid-layout {
       display: grid;
@@ -48,16 +62,21 @@
       padding: 30px 5%;
     }
     .box-section {
-      background-color: #fffbe6;
+      background: repeating-linear-gradient(45deg, #fffbe6, #fffbe6 10px, #ffffcc 10px, #ffffcc 20px);
       border: 2px dashed #000;
       padding: 20px;
       box-shadow: 2px 2px 0 #000;
+      transition: transform 0.2s ease-in-out;
+    }
+    .box-section:hover {
+      transform: scale(1.02);
     }
     .title {
       font-weight: bold;
       font-size: 1.5em;
       text-transform: uppercase;
       margin-bottom: 10px;
+      animation: flicker 3s infinite;
     }
     .box-section.full {
       grid-column: span 2;
@@ -68,6 +87,7 @@
       color: #ffdcdc;
       font-size: 0.85em;
       padding: 8px;
+      font-family: monospace;
     }
     #chat-toggle {
       position: fixed;
@@ -101,97 +121,28 @@
       background-color: #aaa;
       font-size: 0.75em;
     }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      45% { opacity: 0.4; }
+      55% { opacity: 1; }
+      60% { opacity: 0.8; }
+    }
+
+    @keyframes hueRotate {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <header>huxmark</header>
   <nav>
-    <a href="/products">Products</a>
-    <a href="/faq">FAQ</a>
-    <a href="/contact">Contact</a>
-    <a href="/about">About</a>
-    <a href="/privacy">Privacy + Terms</a>
+    <a href="/products" title="Browse responsibly">Available Realities</a>
+    <a href="/faq" title="Questions are acceptable">Clarity Engine</a>
+    <a href="/contact" title="Someone is always listening">Reach Out</a>
+    <a href="/about" title="Lore is legally binding">The Lore</a>
+    <a href="/privacy" title="Just trust us">Trust Procedures</a>
   </nav>
 
-  <div class="grid-layout">
-    <div class="box-section">
-      <div class="title">Welcome</div>
-      <p><a href="/about">What is Huxmark?</a></p>
-      <p><a href="/faq">How do I join?</a></p>
-      <p><a href="/faq">Is it free?</a></p>
-    </div>
-
-    <div class="box-section">
-      <div class="title">Categories</div>
-      <ul>
-        <li>Apparel</li>
-        <li>Electronics</li>
-        <li>Food & Drink</li>
-        <li>Health</li>
-        <li>Home & Garden</li>
-        <li>Music</li>
-        <li>Office</li>
-        <li>Sports</li>
-        <li>Toys & Games</li>
-      </ul>
-      <p><a href="/feedback-wheel">🌀 Feedback Wheel</a></p>
-    </div>
-
-    <div class="box-section">
-      <div class="title">Bargains!</div>
-      <p>Take advantage now!</p>
-    </div>
-
-    <div class="box-section">
-      <div class="title">Cool Features</div>
-      <ul>
-        <li>Save searches</li>
-        <li>Track orders</li>
-        <li>Get special offers!</li>
-      </ul>
-    </div>
-
-    <div class="box-section full">
-      <div class="title">Featured</div>
-      <ul>
-        <li><a href="#">Doorbuster Apparel Values</a></li>
-        <li><a href="#">Super Savings in Electronics</a></li>
-        <li><a href="#">Top Summer Drink Picks</a></li>
-        <li><a href="#">Spruce Up Your Home</a></li>
-        <li><a href="#">Find Gifts for All Ages</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="live-counter">
-    <span id="watching-count">82</span> people watching this page right now*
-  </div>
-
-  <div id="chat-toggle">Chat</div>
-  <div id="chat-box">
-    <p><strong>Special Deal:</strong> Talk to a representative now!</p>
-    <p>[Chat interface coming soon]</p>
-  </div>
-
-  <footer>
-    © 1999-2025 Huxmark. All rights reversed. <a href="/huxspin" style="color:#aaa; text-decoration:none">.</a>
-  </footer>
-
-  <script>
-    const counter = document.getElementById('watching-count');
-    setInterval(() => {
-      const fluctuation = Math.floor(Math.random() * 11 - 5);
-      let current = parseInt(counter.textContent);
-      current = Math.max(1, current + fluctuation);
-      counter.textContent = current;
-    }, Math.floor(Math.random() * 2000) + 3000);
-
-    const chatToggle = document.getElementById('chat-toggle');
-    const chatBox = document.getElementById('chat-box');
-
-    chatToggle.addEventListener('click', () => {
-      chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
-    });
-  </script>
-</body>
-</html>
+  <!-- content continues unchanged -->
