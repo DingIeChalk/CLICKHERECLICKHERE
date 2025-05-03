@@ -486,5 +486,29 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // === END: POPUP AD GENERATOR ===
 </script>
+  <script>
+// === START: ACTIVE VIEWERS COUNTER ===
+(function () {
+  const counterText = document.createElement("div");
+  counterText.style.color = "red";
+  counterText.style.fontSize = "14px";
+  counterText.style.fontWeight = "bold";
+  counterText.style.marginBottom = "10px";
+  counterText.style.textAlign = "center";
+
+  let currentCount = Math.floor(Math.random() * 100) + 50;
+  counterText.innerText = `[${currentCount} PEOPLE ARE WATCHING THIS PAGE RIGHT NOW.]`;
+
+  const footer = document.querySelector("footer") || document.body;
+  footer.parentNode.insertBefore(counterText, footer);
+
+  setInterval(() => {
+    const change = Math.floor(Math.random() * 10 - 5); // -5 to +4
+    currentCount = Math.max(1, currentCount + change);
+    counterText.innerText = `[${currentCount} PEOPLE ARE WATCHING THIS PAGE RIGHT NOW.]`;
+  }, 5000);
+})();
+// === END: ACTIVE VIEWERS COUNTER ===
+</script>
 </body>
 </html>
