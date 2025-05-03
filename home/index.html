@@ -372,5 +372,119 @@
   </script>
   <!-- CHATBOX SCRIPT END -->
   <!-- CHATBOX COMPONENT END -->
+  <script>
+// === START: POPUP AD GENERATOR ===
+document.addEventListener("DOMContentLoaded", () => {
+  function createPopupAd() {
+    const popupWrapper = document.createElement("div");
+    const popup = document.createElement("img");
+
+    popupWrapper.style.position = "fixed";
+    popupWrapper.style.top = Math.random() * (window.innerHeight - 200) + "px";
+    popupWrapper.style.left = Math.random() * (window.innerWidth - 300) + "px";
+    popupWrapper.style.width = "300px";
+    popupWrapper.style.background = "#ddd";
+    popupWrapper.style.border = "2px solid #999";
+    popupWrapper.style.zIndex = 9999;
+    popupWrapper.style.boxShadow = "4px 4px 10px rgba(0,0,0,0.3)";
+
+    const fakeTitleBar = document.createElement("div");
+    fakeTitleBar.innerText = "Advertisement";
+    fakeTitleBar.style.background = "#ccc";
+    fakeTitleBar.style.padding = "2px 5px";
+    fakeTitleBar.style.fontSize = "0.8em";
+    fakeTitleBar.style.display = "flex";
+    fakeTitleBar.style.justifyContent = "space-between";
+    fakeTitleBar.style.alignItems = "center";
+    fakeTitleBar.style.cursor = "default";
+
+    const buttonTray = document.createElement("div");
+    ["_", "□", "X"].forEach(label => {
+      const btn = document.createElement("button");
+      btn.innerText = label;
+      btn.style.fontSize = "0.7em";
+      btn.style.marginLeft = "2px";
+      btn.style.width = "18px";
+      btn.style.height = "18px";
+      btn.style.border = "1px solid #888";
+      btn.style.background = "#eee";
+      btn.style.cursor = "pointer";
+      btn.onmousedown = e => e.stopPropagation();
+      buttonTray.appendChild(btn);
+      if (label === "X") {
+        btn.onclick = () => popupWrapper.remove();
+      }
+      if (label === "_" || label === "□") {
+        btn.onclick = () => {
+          popupWrapper.style.top = 0;
+          popupWrapper.style.left = 0;
+          popupWrapper.style.width = "100vw";
+          popupWrapper.style.height = "100vh";
+          popupWrapper.style.right = 0;
+          popupWrapper.style.bottom = 0;
+          popupWrapper.style.margin = 0;
+          popupWrapper.style.minWidth = 'unset';
+          popupWrapper.style.maxWidth = 'unset';
+          popup.style.width = "100%";
+          popup.style.height = "100%";
+          popup.style.position = "absolute";
+          popup.style.top = 0;
+          popup.style.left = 0;
+          popup.style.right = 0;
+          popup.style.bottom = 0;
+          popup.style.objectFit = "contain";
+          popup.style.backgroundColor = "#fff";
+        }
+      }
+    });
+
+    popup.src = "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mrhux.png";
+    popup.style.width = "100%";
+    popup.style.height = "180px";
+    popup.style.objectFit = "contain";
+    popup.style.position = "relative";
+    popup.style.marginTop = "20px";
+    popup.style.cursor = "pointer";
+    popup.onclick = () => window.location.href = "/404";
+
+    fakeTitleBar.appendChild(buttonTray);
+    popupWrapper.appendChild(fakeTitleBar);
+    popupWrapper.appendChild(popup);
+    document.body.appendChild(popupWrapper);
+
+    // DRAGGING LOGIC
+    fakeTitleBar.addEventListener("mousedown", function (e) {
+      if (popupWrapper.style.width === "100vw") return;
+      let shiftX = e.clientX - popupWrapper.getBoundingClientRect().left;
+      let shiftY = e.clientY - popupWrapper.getBoundingClientRect().top;
+
+      function moveAt(pageX, pageY) {
+        popupWrapper.style.left = pageX - shiftX + 'px';
+        popupWrapper.style.top = pageY - shiftY + 'px';
+      }
+
+      function onMouseMove(event) {
+        moveAt(event.pageX, event.pageY);
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
+
+      document.addEventListener("mouseup", function onMouseUp() {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+      });
+    });
+  }
+
+  // Loop every 20 seconds
+  setInterval(() => {
+    requestAnimationFrame(createPopupAd);
+  }, 20000);
+
+  // Initial pop
+  createPopupAd();
+});
+// === END: POPUP AD GENERATOR ===
+</script>
 </body>
 </html>
