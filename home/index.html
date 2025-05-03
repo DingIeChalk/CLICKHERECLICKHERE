@@ -308,7 +308,7 @@
       }
     }
   </script>
-  <!-- CHATBOX COMPONENT STARTS HERE -->
+<!-- CHATBOX COMPONENT START -->
   <div class="chat-box" id="chatBox" style="display: none; flex-direction: column; position: fixed; bottom: 60px; right: 20px; width: 300px; height: 400px; background-color: #fffbe6; color: #000; border: 2px solid #224632; z-index: 9998; box-shadow: 0 0 10px #888; padding: 10px; overflow: hidden;">
     <div class="chat-log" id="chatLog" style="flex-grow: 1; overflow-y: auto; font-size: 0.9em; margin-bottom: 10px;"></div>
     <div class="chat-input" style="display: flex;">
@@ -316,20 +316,12 @@
       <button onclick="sendChat()" style="padding: 5px 10px; background-color: #3366cc; color: white; border: none; cursor: pointer; font-weight: bold;">SEND</button>
     </div>
   </div>
+  <!-- CHATBOX INPUT END -->
+  <!-- CHATBOX TOGGLE START -->
   <button class="chat-toggle" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background-color: #224632; color: #fff; font-family: 'Carter One', cursive; border: none; padding: 10px 15px; cursor: pointer; border-radius: 10px 10px 0 0; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);">[LIVE SUPPORT?]</button>
 
+    <!-- CHATBOX SCRIPT START -->
   <script>
-    function scrollLoop(id, direction) {
-      const grid = document.getElementById(id);
-      if (direction === 1) {
-        const first = grid.firstElementChild;
-        grid.appendChild(first);
-      } else {
-        const last = grid.lastElementChild;
-        grid.insertBefore(last, grid.firstElementChild);
-      }
-    }
-
     function toggleChat() {
       const chatBox = document.getElementById('chatBox');
       chatBox.style.display = chatBox.style.display === 'flex' ? 'none' : 'flex';
@@ -345,25 +337,40 @@
       const input = document.getElementById('chatInput');
       const log = document.getElementById('chatLog');
       const message = input.value.trim();
-      if (message) {
-        const wrapper = document.createElement('div');
-        const userSpan = document.createElement('span');
-        const textSpan = document.createElement('span');
+      if (!message) return;
 
+      const wrapper = document.createElement('div');
+      const textSpan = document.createElement('span');
+      textSpan.style.color = 'red';
+
+      if (!sendChat.hasPaid) {
+        const userSpan = document.createElement('span');
         userSpan.innerText = '[USER:] ';
         userSpan.style.color = '#000';
         textSpan.innerText = '[PAY 4.99$ TO MAKE USE OF THE SUPPORT CHATBOX.]';
-        textSpan.style.color = 'red';
-
         wrapper.appendChild(userSpan);
         wrapper.appendChild(textSpan);
         log.appendChild(wrapper);
-
-        input.value = '';
-        log.scrollTop = log.scrollHeight;
+        sendChat.hasPaid = true;
+      } else if (!sendChat.confirmed) {
+        textSpan.innerText = '[THANK YOU FOR CONFIRMING YOUR PAYMENT, FURTHER MESSAGES WILL BE CHARGED BY THE KEYSTROKE PLUS AN ADDITIONAL FEE PER MESSAGE SENT.]';
+        wrapper.appendChild(textSpan);
+        log.appendChild(wrapper);
+        sendChat.confirmed = true;
+      } else {
+        const keystrokes = message.length;
+        const cost = keystrokes * 0.42 + 4.20;
+        const total = cost.toFixed(2);
+        textSpan.innerText = `[TOTAL SPENT:$${total}]`;
+        wrapper.appendChild(textSpan);
+        log.appendChild(wrapper);
       }
+
+      input.value = '';
+      log.scrollTop = log.scrollHeight;
     }
   </script>
-  <!-- CHATBOX COMPONENT ENDS HERE -->
+  <!-- CHATBOX SCRIPT END -->
+  <!-- CHATBOX COMPONENT END -->
 </body>
 </html>
