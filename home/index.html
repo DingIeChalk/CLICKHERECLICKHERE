@@ -373,6 +373,7 @@
   <!-- CHATBOX SCRIPT END -->
   <!-- CHATBOX COMPONENT END -->
   <script>
+<script>
 // === START: POPUP AD GENERATOR ===
 document.addEventListener("DOMContentLoaded", () => {
   function createPopupAd() {
@@ -380,8 +381,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const popup = document.createElement("img");
 
     popupWrapper.style.position = "fixed";
-    popupWrapper.style.top = Math.random() * (window.innerHeight - 200) + "px";
-    popupWrapper.style.left = Math.random() * (window.innerWidth - 300) + "px";
+    popupWrapper.style.top = Math.max(0, Math.random() * (window.innerHeight - 220)) + "px";
+    popupWrapper.style.left = Math.max(0, Math.random() * (window.innerWidth - 320)) + "px";
     popupWrapper.style.width = "300px";
     popupWrapper.style.background = "#ddd";
     popupWrapper.style.border = "2px solid #999";
@@ -411,9 +412,19 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.cursor = "pointer";
       btn.onmousedown = e => e.stopPropagation();
       buttonTray.appendChild(btn);
+
       if (label === "X") {
-        btn.onclick = () => popupWrapper.remove();
+        btn.onclick = () => {
+          const rect = popupWrapper.getBoundingClientRect();
+          const startX = rect.left;
+          const startY = rect.top;
+          popupWrapper.remove();
+          if (Math.floor(Math.random() * 20) === 0) {
+            startPopupSpam(startX, startY);
+          }
+        };
       }
+
       if (label === "_" || label === "□") {
         btn.onclick = () => {
           popupWrapper.style.top = 0;
@@ -434,7 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
           popup.style.bottom = 0;
           popup.style.objectFit = "contain";
           popup.style.backgroundColor = "#fff";
-        }
+        };
       }
     });
 
@@ -452,7 +463,6 @@ document.addEventListener("DOMContentLoaded", () => {
     popupWrapper.appendChild(popup);
     document.body.appendChild(popupWrapper);
 
-    // DRAGGING LOGIC
     fakeTitleBar.addEventListener("mousedown", function (e) {
       if (popupWrapper.style.width === "100vw") return;
       let shiftX = e.clientX - popupWrapper.getBoundingClientRect().left;
@@ -468,20 +478,46 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       document.addEventListener('mousemove', onMouseMove);
-
       document.addEventListener("mouseup", function onMouseUp() {
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseup", onMouseUp);
       });
     });
+
+    return popupWrapper;
   }
 
-  // Loop every 20 seconds
+  function startPopupSpam(startX = 0, startY = 0) {
+    let spamCount = 500;
+    let audio = new Audio("https://www.myinstants.com/media/sounds/windows-error.mp3");
+    let x = startX;
+    let y = startY;
+    let dx = 10;
+    let dy = 10;
+
+    const spamInterval = setInterval(() => {
+      if (spamCount-- <= 0) return clearInterval(spamInterval);
+
+      const popup = createPopupAd();
+      popup.style.left = `${x}px`;
+      popup.style.top = `${y}px`;
+      popup.style.zIndex = 9999 + spamCount;
+
+      audio.cloneNode(true).play();
+
+      x += dx;
+      y += dy;
+
+      if (x + 300 >= window.innerWidth || x <= 0) dx *= -1;
+      if (y + 200 >= window.innerHeight || y <= 0) dy *= -1;
+
+    }, 20);
+  }
+
   setInterval(() => {
     requestAnimationFrame(createPopupAd);
   }, 20000);
 
-  // Initial pop
   createPopupAd();
 });
 // === END: POPUP AD GENERATOR ===
