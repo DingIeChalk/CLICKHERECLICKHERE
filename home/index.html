@@ -359,8 +359,8 @@
         sendChat.confirmed = true;
       } else {
         const keystrokes = message.length;
-        const cost = keystrokes * 0.42 + 4.20;
-        const total = cost.toFixed(2);
+        sendChat.totalCost = (sendChat.totalCost || 0) + (keystrokes * 0.42 + 4.20);
+        const total = sendChat.totalCost.toFixed(2);
         textSpan.innerText = `[TOTAL SPENT:$${total}]`;
         wrapper.appendChild(textSpan);
         log.appendChild(wrapper);
