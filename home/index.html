@@ -375,7 +375,7 @@
 <script>
 // === START: POPUP AD GENERATOR ===
 document.addEventListener("DOMContentLoaded", () => {
-  function createPopupAd() {
+  function createPopupAd(forceImageUrl = null) {
     const popupWrapper = document.createElement("div");
     const popup = document.createElement("img");
 
@@ -456,7 +456,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mirror.png",
       "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/partial%20key.png"
     ];
-    popup.src = adImages[Math.floor(Math.random() * adImages.length)];
+    popup.src = forceImageUrl || adImages[Math.floor(Math.random() * adImages.length)];
     popup.style.width = "100%";
     popup.style.height = "180px";
     popup.style.objectFit = "contain";
@@ -500,7 +500,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Use random positioning instead of linear bouncing
 
     const spamInterval = setInterval(() => {
-      if (spamCount-- <= 0) return clearInterval(spamInterval);
+      if (spamCount-- <= 0) {
+        // Final popup — secret ad
+        const popup = createPopupAd("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mrhux.png");
+        popup.querySelector('img').onclick = () => window.location.href = "https://huxmark.com/huxspin";
+        popup.style.left = `${Math.random() * (window.innerWidth - 300)}px`;
+        popup.style.top = `${Math.random() * (window.innerHeight - 300)}px`;
+        popup.style.zIndex = 20000;
+        return clearInterval(spamInterval);
+      }
 
       const popup = createPopupAd();
       popup.style.left = `${Math.random() * (window.innerWidth - 300)}px`;
