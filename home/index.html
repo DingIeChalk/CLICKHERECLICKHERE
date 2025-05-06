@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Huxmark - Your Personal Web Shopping Community*</title>
   <style>
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     * { box-sizing: border-box; }
     html, body {
       margin: 0;
@@ -418,7 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const startX = rect.left;
           const startY = rect.top;
           popupWrapper.remove();
-          if (Math.floor(Math.random() * 2) === 0) {
+          if (Math.floor(Math.random() * 20) === 0) {
             startPopupSpam(startX, startY);
           }
         };
@@ -503,7 +507,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (spamCount-- <= 0) {
         // Final popup — secret ad
         const popup = createPopupAd("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mrhux.png");
-        popup.querySelector('img').onclick = () => window.location.href = "https://huxmark.com/huxspin";
+        const finalImg = popup.querySelector('img');
+        setTimeout(() => finalImg.style.animation = "spin 1s linear", 1000);
+        finalImg.onclick = () => {
+          finalImg.style.animation = "spin 1s linear";
+          setTimeout(() => {
+            window.location.href = "https://huxmark.com/huxspin";
+          }, 1000);
+        };
         popup.style.left = `${Math.random() * (window.innerWidth - 300)}px`;
         popup.style.top = `${Math.random() * (window.innerHeight - 300)}px`;
         popup.style.zIndex = 20000;
