@@ -156,7 +156,11 @@
       createLogo(logo.x + 20, logo.y + 20, dx, dy);
 
       if (duplicateCount === maxDuplicates) {
-        setTimeout(() => triggerJumpScareWithTextbox(), waitForJumpscare);
+        if (!jumpTimer) {
+          jumpTimer = setTimeout(() => {
+            window.location.href = 'https://huxmark.com/home';
+          }, waitForJumpscare);
+        }
       } else if (duplicateCount > maxDuplicates && jumpTimer) {
         clearTimeout(jumpTimer);
         jumpTimer = null;
