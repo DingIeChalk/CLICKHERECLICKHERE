@@ -169,17 +169,14 @@
 </head>
 <body>
   <main>
-    <header>HUXMARK<sup style="font-size: 0.5em; vertical-align: super;">™</sup></header>
+    <header><a href="https://huxmark.com/home" style="color: white; text-decoration: none;">HUXMARK<sup style="font-size: 0.5em; vertical-align: super;">™</sup></a></header>
 
     <nav>
-      <a href="#">[HOME]</a>
-      <a href="#">[ELECTRONICS]</a>
-      <a href="#">[COLLECTIBLES]</a>
-      <a href="#">[HOME & GARDEN]</a>
-      <a href="#">[APPAREL]</a>
-      <a href="#">[TOYS]</a>
-      <a href="#">[MORE]</a>
-    </nav>
+  <a href="https://huxmark.com/home">HOME</a>
+  <a href="https://huxmark.com/products">PRODUCTS</a>
+  <a href="https://huxmark.com/about">ABOUT</a>
+  <a href="https://huxmark.com/faq">FAQ</a>
+</nav>
 
     <div class="search-bar">
       <input type="text" placeholder="[SEARCH FOR ANOMALIES...]">
@@ -191,13 +188,7 @@
       <button>[OBSERVE]</button>
     </div>
 
-    <div class="category-nav">
-      <a href="#">[PSYCHIC TOOLS]</a>
-      <a href="#">[PORTABLE HOLES]</a>
-      <a href="#">[THERMAL SECRETS]</a>
-      <a href="#">[WORN REALITIES]</a>
-      <a href="#">[UNLISTED OBJECTS]</a>
-    </div>
+    
 
     <div class="hero">
       <strong>["LEGENDS MISPLACED, ICONS REISSUED."]</strong><br>
@@ -297,8 +288,14 @@
   </div>
 </section>
 </main>
-  <footer class="footer">
-    © 1999–2025 HUXMARK. All rights reversed.
+  <div id="watcher-counter" style="background-color: #f6e46a; width: 100%; text-align: center; padding: 10px; color: red; font-size: 14px; font-weight: bold;"></div>
+<div style="background-color: #eee; width: 100%; text-align: center; padding: 10px; font-size: 0.9em;">
+  <a href="https://huxmark.com/contact" style="margin-right: 15px; color: black; text-decoration: underline;">Contact Us</a>
+  <a href="https://huxmark.com/privacyterms" style="color: black; text-decoration: underline;">Privacy & Terms</a>
+</div>
+<div class="footer">
+  © 1999–2025 HUXMARK. All rights reversed.
+</div>
   </footer>
   <script>
     function scrollLoop(id, direction) {
@@ -503,30 +500,15 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // === END: POPUP AD GENERATOR ===
 </script>
-  <script>
-// === START: ACTIVE VIEWERS COUNTER ===
-(function () {
-  const counterText = document.createElement("div");
-  counterText.style.color = "red";
-  counterText.style.fontSize = "14px";
-  counterText.style.fontWeight = "bold";
-  counterText.style.marginBottom = "10px";
-  counterText.style.textAlign = "center";
-
-  let currentCount = Math.floor(Math.random() * 100) + 50;
-  counterText.innerText = `[${currentCount} PEOPLE ARE WATCHING THIS PAGE RIGHT NOW.]`;
-
-  const footer = document.querySelector("footer") || document.body;
-  footer.parentNode.insertBefore(counterText, footer);
-
-  setInterval(() => {
-    const change = Math.floor(Math.random() * 10 - 5); // -5 to +4
-    currentCount = Math.max(1, currentCount + change);
-    counterText.innerText = `[${currentCount} PEOPLE ARE WATCHING THIS PAGE RIGHT NOW.]`;
-  }, 5000);
-})();
-// === END: ACTIVE VIEWERS COUNTER ===
+  
+<script>
+let watcherCount = Math.floor(Math.random() * (433 - 30 + 1)) + 30;
+setInterval(() => {
+  const change = Math.floor(Math.random() * 10) + 1; // 1 to 10
+  const direction = Math.random() < 0.5 ? -1 : 1;
+  watcherCount = Math.max(30, Math.min(433, watcherCount + direction * change));
+  document.getElementById('watcher-counter').innerText = `${watcherCount} PEOPLE ARE WATCHING THIS PAGE RIGHT NOW.`;
+}, 3000);
 </script>
 </body>
 </html>
-
