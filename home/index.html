@@ -179,14 +179,16 @@
 </nav>
 
     <div class="search-bar">
-      <input type="text" placeholder="[SEARCH FOR ANOMALIES...]">
-      <select>
-        <option>[ALL REALITIES]</option>
-        <option>[DEVICES]</option>
-        <option>[OBJECTS]</option>
-      </select>
-      <button>[OBSERVE]</button>
-    </div>
+  <form id="searchForm" action="https://huxmark.com/404" method="GET">
+    <input type="text" placeholder="[SEARCH FOR ANOMALIES...]" name="query">
+    <select>
+      <option>[ALL REALITIES]</option>
+      <option>[DEVICES]</option>
+      <option>[OBJECTS]</option>
+    </select>
+    <button type="submit" style="cursor: pointer; background: #3366cc; color: white; border: 2px outset #666;">[OBSERVE]</button>
+  </form>
+</div>
 
     
 
@@ -502,13 +504,38 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
   
 <script>
+// === START: WATCHER COUNTER ===
 let watcherCount = Math.floor(Math.random() * (433 - 30 + 1)) + 30;
 setInterval(() => {
   const change = Math.floor(Math.random() * 10) + 1; // 1 to 10
   const direction = Math.random() < 0.5 ? -1 : 1;
   watcherCount = Math.max(30, Math.min(433, watcherCount + direction * change));
   document.getElementById('watcher-counter').innerText = `${watcherCount} PEOPLE ARE WATCHING THIS PAGE RIGHT NOW.`;
+// === END: WATCHER COUNTER ===
 }, 3000);
+</script>
+
+<script>
+// === START: SEARCH REDIRECT LOGIC ===
+document.getElementById("searchForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const input = document.querySelector('#searchForm input[type="text"]');
+  const query = input.value.trim();
+  if (query.length > 0) {
+    window.location.href = "https://huxmark.com/404";
+  }
+});
+
+const observeBtn = document.querySelector('#searchForm button[type="submit"]');
+observeBtn.addEventListener('click', function(e) {
+  const input = document.querySelector('#searchForm input[type="text"]');
+  const query = input.value.trim();
+  if (query.length > 0) {
+    e.preventDefault();
+    window.location.href = "https://huxmark.com/404";
+  }
+});
+// === END: SEARCH REDIRECT LOGIC ===
 </script>
 </body>
 </html>
