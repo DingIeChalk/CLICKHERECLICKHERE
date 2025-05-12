@@ -379,10 +379,17 @@
 <script>
 // === START: POPUP AD GENERATOR ===
 document.addEventListener("DOMContentLoaded", () => {
-  function createPopupAd(forceImageUrl = null) {
-    const popupWrapper = document.createElement("div");
-    const popup = document.createElement("img");
+  const preloadAds = [
+    "https://i.imgur.com/ZWhNCMF.mp4",
+    "https://i.imgur.com/Kx8Sze7.mp4",
+    "https://i.imgur.com/vs5QyoQ.mp4",
+    "https://i.imgur.com/HSYspXm.mp4",
+    "https://i.imgur.com/KWp8ItP.mp4",
+    "https://i.imgur.com/DVGwWfw.mp4"
+  ];
 
+  function createPopupAd(forceVideoUrl = null) {
+    const popupWrapper = document.createElement("div");
     popupWrapper.style.position = "fixed";
     popupWrapper.style.top = Math.max(0, Math.random() * (window.innerHeight - 220)) + "px";
     popupWrapper.style.left = Math.max(0, Math.random() * (window.innerWidth - 320)) + "px";
@@ -403,6 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fakeTitleBar.style.cursor = "default";
 
     const buttonTray = document.createElement("div");
+    const popup = document.createElement("video");
     ["_", "□", "X"].forEach(label => {
       const btn = document.createElement("button");
       btn.innerText = label;
@@ -414,53 +422,50 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.style.background = "#eee";
       btn.style.cursor = "pointer";
       btn.onmousedown = e => e.stopPropagation();
-      buttonTray.appendChild(btn);
 
       if (label === "X") {
         btn.onclick = () => {
-          const rect = popupWrapper.getBoundingClientRect();
-          const startX = rect.left;
-          const startY = rect.top;
           popupWrapper.remove();
-          if (Math.floor(Math.random() * 20) === 0) {
-            startPopupSpam(startX, startY);
+          if (Math.random() < 0.05) {
+          for (let i = 0; i < 120; i++) {
+            setTimeout(() => {
+              const newAd = createPopupAd();
+              if (newAd) {
+                newAd.style.zIndex = 10000 + i;
+                try {
+                  const sfx = new Audio("https://www.myinstants.com/media/sounds/windows-error.mp3");
+                  sfx.volume = 1.0;
+                  sfx.play();
+                } catch (e) {}
+              }
+            }, i * 30);
           }
         };
       }
 
       if (label === "_" || label === "□") {
         btn.onclick = () => {
+                    }
           popupWrapper.style.top = 0;
           popupWrapper.style.left = 0;
           popupWrapper.style.width = "100vw";
           popupWrapper.style.height = "100vh";
-          popupWrapper.style.right = 0;
-          popupWrapper.style.bottom = 0;
-          popupWrapper.style.margin = 0;
-          popupWrapper.style.minWidth = 'unset';
-          popupWrapper.style.maxWidth = 'unset';
           popup.style.width = "100%";
           popup.style.height = "100%";
-          popup.style.position = "absolute";
-          popup.style.top = 0;
-          popup.style.left = 0;
-          popup.style.right = 0;
-          popup.style.bottom = 0;
           popup.style.objectFit = "contain";
-          popup.style.backgroundColor = "#fff";
+          popup.style.backgroundColor = "transparent";
         };
       }
+
+      buttonTray.appendChild(btn);
     });
 
-    const adImages = [
-      "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/CONGRATULATZIONS.gif",
-      "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/HUXMARK%20PLUS.gif",
-      "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/NEW%20YOU.gif",
-      "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/ONE%20YEAR.gif",
-      "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/TEXT%20BACK.gif",
-      "https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/EGG.gif"
-    ];
-    popup.src = forceImageUrl || adImages[Math.floor(Math.random() * adImages.length)];
+    const selectedVideo = forceVideoUrl || preloadAds[Math.floor(Math.random() * preloadAds.length)];
+    popup.src = selectedVideo;
+    popup.autoplay = true;
+    popup.loop = true;
+    popup.muted = true;
+    popup.playsInline = true;
     popup.style.width = "100%";
     popup.style.height = "180px";
     popup.style.objectFit = "contain";
@@ -474,69 +479,24 @@ document.addEventListener("DOMContentLoaded", () => {
     popupWrapper.appendChild(popup);
     document.body.appendChild(popupWrapper);
 
-    fakeTitleBar.addEventListener("mousedown", function (e) {
-      if (popupWrapper.style.width === "100vw") return;
-      let shiftX = e.clientX - popupWrapper.getBoundingClientRect().left;
-      let shiftY = e.clientY - popupWrapper.getBoundingClientRect().top;
-
-      function moveAt(pageX, pageY) {
-        popupWrapper.style.left = pageX - shiftX + 'px';
-        popupWrapper.style.top = pageY - shiftY + 'px';
-      }
-
-      function onMouseMove(event) {
-        moveAt(event.pageX, event.pageY);
-      }
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener("mouseup", function onMouseUp() {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-      });
-    });
+    let offsetX, offsetY;
+    fakeTitleBar.onmousedown = (e) => {
+      offsetX = e.clientX - popupWrapper.offsetLeft;
+      offsetY = e.clientY - popupWrapper.offsetTop;
+      document.onmousemove = (e2) => {
+        popupWrapper.style.left = e2.clientX - offsetX + "px";
+        popupWrapper.style.top = e2.clientY - offsetY + "px";
+      };
+      document.onmouseup = () => {
+        document.onmousemove = null;
+      };
+    };
 
     return popupWrapper;
   }
 
-  function startPopupSpam(startX = 0, startY = 0) {
-    let spamCount = 500;
-    let audio = new Audio("https://www.myinstants.com/media/sounds/windows-error.mp3");
-    // Use random positioning instead of linear bouncing
-
-    const spamInterval = setInterval(() => {
-      if (spamCount-- <= 0) {
-        // Final popup — secret ad
-        const popup = createPopupAd("https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/mrhux.png");
-        const finalImg = popup.querySelector('img');
-        setTimeout(() => finalImg.style.animation = "spin 1s linear", 1000);
-        finalImg.onclick = () => {
-          finalImg.style.animation = "spin 1s linear";
-          setTimeout(() => {
-            window.location.href = "https://huxmark.com/huxspin";
-          }, 1000);
-        };
-        popup.style.left = `${Math.random() * (window.innerWidth - 300)}px`;
-        popup.style.top = `${Math.random() * (window.innerHeight - 300)}px`;
-        popup.style.zIndex = 20000;
-        return clearInterval(spamInterval);
-      }
-
-      const popup = createPopupAd();
-      popup.style.left = `${Math.random() * (window.innerWidth - 300)}px`;
-      popup.style.top = `${Math.random() * (window.innerHeight - 300)}px`;
-      popup.style.zIndex = 10000 + (500 - spamCount);
-
-      const quietAudio = audio.cloneNode(true);
-      quietAudio.volume = 0.5;
-      quietAudio.play();
-
-      // Removed directional bounce logic in favor of full random placement
-
-    }, 20);
-  }
-
   setInterval(() => {
-    requestAnimationFrame(createPopupAd);
+    requestAnimationFrame(() => createPopupAd());
   }, 20000);
 
   createPopupAd();
