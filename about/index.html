@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About - Huxmark</title>
+  <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0e0e0e;
+      color: #fff;
+      font-family: 'Carter One', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+      text-transform: uppercase;
+    }
+
+    h1, h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1.25rem;
+      max-width: 800px;
+      line-height: 1.75rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .glitch {
+      color: #ff0059;
+      animation: glitch 1.5s infinite;
+    }
+
+    .color-p { color: #ff4b4b; }
+    .color-o { color: #ffaa00; }
+    .color-e { color: #00eaff; }
+    .color-m { color: #b084ff; }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red, -2px 0 cyan; }
+      50% { text-shadow: -2px 0 red, 2px 0 cyan; }
+      100% { text-shadow: 2px 0 red, -2px 0 cyan; }
+    }
+  </style>
+  <!-- IF YOU'RE READING THIS YOU'RE A DIRTY CHEATER AND SHOULD BE ASHAMED. WRITE ME AN APOLOGY. -->
+$1
+<body>
+  <h1 class="glitch">[ABOUT HUXMARK]</h1>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const exclusions = ["ABOUT HUXMARK", "A FEW RULES"];
+      document.querySelectorAll("p").forEach(p => {
+        if (exclusions.some(title => p.textContent.includes(title))) return;
+        p.innerHTML = p.innerHTML.replace(/P/g, '<span class="color-p">P</span>')
+                                 .replace(/O/g, '<span class="color-o">O</span>')
+                                 .replace(/E/g, '<span class="color-e">E</span>')
+                                 .replace(/M/g, '<span class="color-m">M</span>');
+      });
+    });
+  </script>
+  <p>[WELCOME TO HUXMARK! YOUR ONE-STOP PORTAL FOR THE SURREAL, THE GREATEST DEALS OF YOUR LIFE, AND THE ABSOLUTELY IRRESISTIBLE. NOW I BET YOU’RE WONDERING—“OH! OH! WHAT IS THIS? WHAT’S YOUR STORY?”]</p>
+  <p>[WELL I’M GLAD YOU ASKED! HERE AT HUXMARK, WE HAVE ONLY ONE MISSION: TO GIVE YOU THE BEST DEALS IN THIS ENTIRE NARRATIVE!]</p>
+  <p>[WHY, YOU MAY ASK? WELL AREN’T YOU NOSY! TELL YOU WHAT—VISIT EVERY PAGE ON THIS WEBSITE, AND I’LL GIVE YOU A TREAT. I’LL EVEN LET YOU IN ON HOW WE OPERATE... AND MAYBE OFFER A SPECIAL PRIZE OF THE GREEN VARIETY.]</p>
+
+  <h2 class="glitch">[A FEW RULES!]</h2>
+  <p>[CHEATERS ARE ALMOST AS BAD AS CHEAPSKATES.]</p>
+
+  <p>[NO TRYING TO GET AROUND THE SITE ITSELF. THAT MEANS NO INSPECT ELEMENT, NO SOURCE CODE PEEKING, NO DEV TOOLS. I WORKED HARD ON THIS, AND I’LL BE DAMNED IF YOU CHEAT YOUR WAY THROUGH IT.]</p>
+
+  <p>[NO AI FOR SOLVING PUZZLES. NO RIDDLES, NO BRUTE-FORCING, NO GPT THIS OR THAT. IF YOU NEED A BINARY-TO-TEXT SITE? FINE. BUT YOUR BRAIN DOES THE WORK, NOT YOUR BOTS.]</p>
+
+  <p>[WRITE YOUR CODES DOWN. THE SITE WON’T REMEMBER THEM FOR YOU. I WON’T REMEMBER THEM FOR YOU. (I FORGET THINGS ON PURPOSE—IT’S PART OF THE CHARM.)]</p>
+
+  <p>[NO SHARING WALKTHROUGHS OR CODES. THIS ISN’T A GROUP PROJECT. IF I WANTED EVERYONE TO KNOW THE SECRETS, I’D SCREAM THEM THROUGH A MEGAPHONE MADE OF TEETH.]</p>
+
+  <p>[DON’T TRY TO RANDOMLY GUESS FUTURE URLS, BUT DO GUESS WITH INTENTION. DONT JUMP AHEAD, NO RANDOM SLASHES OR NUMBER COMBOS. YOU’LL JUST RUIN THE PACING—AND PROBABLY GET CONFUSED.]</p>
+
+  <p>[IF IT FEELS LIKE CHEATING? DON’T DO IT. JUST ASK! I WON’T EVEN CHARGE YOU. IN FACT, I MIGHT GIVE YOU A HINT. MAYBE. (NO GUARANTEES.)]</p>
+
+  <p>[IF SOMETHING BREAKS—OWN IT. IF YOU GLITCH THE SITE, LET ME KNOW. BUT DON’T ACT INNOCENT WHEN I SEE YOUR DIGITAL FINGERPRINTS INSIDE <a href="https://huxmark.com/log" style="color: #ff0059; text-decoration: none;">&lt;SCRIPT&gt;</a> TAGS.]</p>
+
+  <p>[ABOVE ALL ELSE: HAVE FUN. HAHA.]</p>
+  <p>[OH—AND ONE MORE THING.]</p>
+  <p>[THERE WILL BE A QUIZ AT THE END TO MAKE SURE YOU DID IT ALL RIGHT. HOPE YOU WERE PAYING ATTENTION.]</p>
+</body>
+</html>
 
