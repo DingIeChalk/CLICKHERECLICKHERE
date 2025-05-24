@@ -1,1 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huxmark - FAQ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Niagato&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Carter One', cursive;
+      background-image: url('https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/paper.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 20px solid #d93c1e;
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+    .container {
+      text-align: center;
+      margin-top: 20px;
+      position: relative;
+    }
+    h1.title {
+      font-family: 'Niagato', serif;
+      font-size: 3em;
+      color: #d93c1e;
+      margin-bottom: 40px;
+    }
+    .fortune-space {
+      min-height: 160px;
+    }
+    .hat {
+      width: 200px;
+      cursor: grab;
+      margin-top: 50px;
+      user-select: none;
+      -webkit-user-drag: none;
+      position: fixed;
+      top: 300px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      z-index: 10;
+    }
+    .button {
+      margin-top: 300px;
+      padding: 10px 20px;
+      font-size: 1.5em;
+      cursor: pointer;
+      border: none;
+      background-color: #d93c1e;
+      color: white;
+      font-family: 'Carter One', cursive;
+    }
+    .fortune {
+      margin: 0 auto 30px auto;
+      background-color: #fff;
+      padding: 10px 30px;
+      display: inline-block;
+      border: 2px solid #000;
+      max-width: 500px;
+      animation: appear 0.4s ease-out;
+    }
+    .fortune .question {
+      color: #d93c1e;
+      font-weight: bold;
+    }
+    .fortune .answer {
+      color: black;
+      margin-top: 0.5em;
+      font-family: 'Carter One', cursive;
+    }
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spinOut {
+      0% { transform: rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: rotate(720deg) scale(0.1); opacity: 0; }
+    }
+    @keyframes dropFromHat {
+      0% {
+        opacity: 0;
+        transform: scale(0.1) translateY(-100px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="border"></div>
+  <div class="container" style="height: 100vh; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+    <h1 class="title">FREQUENTLY ASKED QUESTIONS</h1>
+    <div id="fortune-container" class="fortune-space"></div>
+    <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/hat.png" alt="Hat" class="hat" id="hat" draggable="false">
+    <div>
+      <button class="button" id="toggle-button">DRAW A QUESTION</button>
+    </div>
+  </div>
+<script>
+  const questions = [
+  { q: 'WHAT DO I GET FOR SIGNING UP? - SARAH, AGE 19', a: '[ACCESS TO GREAT DEALS, OPPORTUNITY, AND SAVINGS. CONGRATULATIONS!]' },
+  { q: 'WHY IS THE LOGO STARING AT ME? - HUNTER, AGE 12', a: '[IT\'S CALLED A STARING CONTEST, KID. LOOK IT UP.]' },
+  { q: 'BLABLABLA BAA!! - AIDEN, AGE 1', a: '[I LIKE YOUR STYLE, KID.]' },
+  { q: 'IF I AGREE TO A DEAL, DO I GET OUT? - KEVIN, AGE 19', a: '[\'OUT\' IS A RELATIVE TERM.]' },
+  { q: 'WHO IS SENDING THESE ADS? - EMILY, AGE 8', a: '[SPAM IS AN ART. IF YOU DON\'T DIG IT, SUCK IT UP.]' },
+  { q: 'DO YOU SELL CRAYONS? - HANNAH, AGE 4', a: '[I DO. SUBMIT A PHOTO OF YOUR MOMMY\'S CREDIT CARD AND I\'LL SEND THEM OUT.]' },
+  { q: 'WHAT\'S THE FASTEST WAY TO WIN? - ALEX, AGE 15', a: '[NOT TO PLAY, KID.]' },
+  { q: 'IS MY PROFILE PUBLIC? - TYLER, AGE 12', a: '[ONLY TO EVERYONE WHO MATTERS.]' },
+  { q: 'WHY CAN\'T I LOG OUT? - HENRY, AGE 12', a: '[BECAUSE YOU\'RE NOT DONE.]' },
+  { q: 'WHY IS EVERYTHING SMILING? - ABBY, AGE 9', a: '[THEY\'RE HAPPY ABOUT ALL THE GREAT DEALS THEY\'VE GOTTEN.]' },
+  { q: 'WHY ME? - HAILEY, AGE 5', a: '[WHY NOT YOU?]' },
+  { q: 'IS MY MICROPHONE ON? - ANDREW, AGE 19', a: '[NO. BY THE WAY, YOU TALK IN YOUR SLEEP.]' }
+];
+
+  let currentIndex = 0;
+  let paperVisible = false;
+  const fortuneContainer = document.getElementById('fortune-container');
+  const toggleButton = document.getElementById('toggle-button');
+  const hat = document.getElementById('hat');
+  let hatFlipped = false;
+  let offsetX = 0, offsetY = 0, isDragging = false;
+  let lastDirection = 0;
+  let shakeCount = 0;
+  let lastX = 0;
+
+  hat.addEventListener('mousedown', e => {
+    e.preventDefault();
+    if (!hatFlipped && currentIndex >= questions.length) {
+      hatFlipped = true;
+      hat.style.transform += ' rotateX(180deg)';
+      hat.style.transition = 'transform 0.5s';
+    }
+    if (hatFlipped) {
+      isDragging = true;
+      offsetX = e.offsetX;
+      offsetY = e.offsetY;
+      lastX = e.clientX;
+      shakeCount = 0;
+      lastDirection = 0;
+    }
+  });
+
+  document.addEventListener('mousemove', e => {
+    if (isDragging) {
+      const newLeft = e.clientX - offsetX;
+      const newTop = e.clientY - offsetY;
+      hat.style.left = `${newLeft}px`;
+      hat.style.top = `${newTop}px`;
+
+      const dx = e.clientX - lastX;
+      const direction = dx > 0 ? 1 : dx < 0 ? -1 : 0;
+      if (direction !== 0 && direction !== lastDirection) {
+        shakeCount++;
+        lastDirection = direction;
+      }
+      lastX = e.clientX;
+
+      if (shakeCount >= 15 && !document.getElementById('secret-note')) {
+        const note = document.createElement('div');
+        note.className = 'fortune';
+        note.id = 'secret-note';
+        note.innerHTML = '<div class="question">[HAHA! THIS ISNT A RABBIT!]</div><div class="answer">[CLICK HERE!]</div>';
+        note.style.cursor = 'pointer';
+        note.onclick = () => window.location.href = 'https://huxmark.com/horn';
+        document.body.appendChild(note);
+        note.style.position = 'absolute';
+        note.style.left = hat.getBoundingClientRect().left + 'px';
+        note.style.top = hat.getBoundingClientRect().bottom + 'px';
+        note.style.animation = 'dropFromHat 1.5s ease-in forwards';
+      }
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  function createFortune(q, a) {
+    return `<div class="fortune" id="paper"><div class="question">${q}</div><div class="answer">${a}</div></div>`;
+  }
+
+  toggleButton.addEventListener('click', () => {
+    if (!paperVisible) {
+      if (currentIndex < questions.length) {
+        const { q, a } = questions[currentIndex++];
+        fortuneContainer.innerHTML = createFortune(q, a);
+      } else {
+        fortuneContainer.innerHTML = createFortune('[THATS ALL THE QUESTIONS FOR NOW!!!]', '');
+        hat.style.cursor = 'grab';
+      }
+      toggleButton.textContent = 'TRASH IT';
+      paperVisible = true;
+    } else {
+      const paper = document.getElementById('paper');
+      if (paper) {
+        paper.style.animation = 'spinOut 0.5s forwards';
+        setTimeout(() => paper.remove(), 500);
+      }
+      toggleButton.textContent = 'DRAW A QUESTION';
+      paperVisible = false;
+    }
+  });
+</script>
+</body>
+</html>
 
