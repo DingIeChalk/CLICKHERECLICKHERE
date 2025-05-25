@@ -1,1 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HUXMARK - /HORN</title>
+  <style>
+    @keyframes morseFlicker {
+      0%, 5% { opacity: 1; } /* Keep visible to show the word */
+      5%, 10% { opacity: 0; } /* Then fade out before blinks start */
+      10%, 11.87% { opacity: 1; }
+      11.87%, 14.67% { opacity: 0; }
+      14.67%, 17.48% { opacity: 1; }
+      17.48%, 20.28% { opacity: 0; }
+      20.28%, 23.08% { opacity: 1; }
+      23.08%, 24.95% { opacity: 0; }
+      24.95%, 25.89% { opacity: 1; }
+      25.89%, 28.69% { opacity: 0; }
+      28.69%, 31.50% { opacity: 1; }
+      31.50%, 34.30% { opacity: 0; }
+      34.30%, 37.10% { opacity: 1; }
+      37.10%, 39.91% { opacity: 0; }
+      39.91%, 42.71% { opacity: 1; }
+      42.71%, 47.38% { opacity: 0; }
+      47.38%, 50.19% { opacity: 1; }
+      50.19%, 52.99% { opacity: 0; }
+      52.99%, 55.79% { opacity: 1; }
+      55.79%, 58.60% { opacity: 0; }
+      58.60%, 61.40% { opacity: 1; }
+      61.40%, 64.21% { opacity: 0; }
+      64.21%, 67.01% { opacity: 1; }
+      67.01%, 71.68% { opacity: 0; }
+      71.68%, 72.62% { opacity: 1; }
+      72.62%, 73.55% { opacity: 0; }
+      73.55%, 74.49% { opacity: 1; }
+      74.49%, 75.42% { opacity: 0; }
+      75.42%, 76.36% { opacity: 1; }
+      76.36%, 77.29% { opacity: 0; }
+      77.29%, 78.22% { opacity: 1; }
+      78.22%, 79.16% { opacity: 0; }
+      79.16%, 81.96% { opacity: 1; }
+      81.96%, 82.90% { opacity: 0; }
+      82.90%, 83.83% { opacity: 1; }
+      83.83%, 84.77% { opacity: 0; }
+      84.77%, 85.70% { opacity: 1; }
+      85.70%, 86.64% { opacity: 0; }
+      86.64%, 87.57% { opacity: 1; }
+      87.57%, 90.38% { opacity: 0; }
+      90.38%, 93.18% { opacity: 1; }
+      93.18%, 94.11% { opacity: 0; }
+      94.11%, 95.05% { opacity: 1; }
+      95.05%, 99.72% { opacity: 0; }
+      99.72%, 100% { opacity: 1; }
+    }
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      transition: opacity 2s ease;
+    }
+    #tunerContainer {
+      width: 80%;
+      max-width: 600px;
+      position: relative;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #frequencyDisplay {
+      font-size: 2em;
+      margin-bottom: 10px;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  position: relative;
+  pointer-events: auto;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;$1
+}
+    #message {
+      font-size: 1.5em;
+      text-align: center;
+      margin-top: 20px;
+      min-height: 3em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+    }
+    #message.visible {
+      animation: fadeAndFlicker 2s ease forwards, messageFlicker 0.12s infinite 2s;
+    }
+    #flicker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.03);
+      pointer-events: none;
+      mix-blend-mode: lighten;
+      animation: flickerAnim 0.15s infinite;
+    }
 
+    @keyframes flickerAnim {
+      0%   { opacity: 0.03; }
+      50%  { opacity: 0.01; }
+      100% { opacity: 0.03; }
+    }
+
+    @keyframes messageFlicker {
+      0%   { opacity: 0.9; }
+      10%  { opacity: 0.65; }
+      20%  { opacity: 1; }
+      30%  { opacity: 0.8; }
+      40%  { opacity: 0.6; }
+      50%  { opacity: 1; }
+      60%  { opacity: 0.7; }
+      70%  { opacity: 0.95; }
+      80%  { opacity: 0.6; }
+      90%  { opacity: 0.85; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes fadeAndFlicker {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    #slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    position: relative;
+  }
+  #slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 2px;
+  height: 30px;
+  background: red;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 10px red;
+}
+  #slider::-moz-range-thumb {
+  width: 2px;
+  height: 30px;
+  background: red;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 10px red;
+}
+  #slider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #600;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  #slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 40px; /* increase clickable area */
+    background: transparent;
+    position: relative;
+  }
+  #slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 2px;
+    height: 30px;
+    background: red;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 10px red;
+  }
+  #slider::-moz-range-thumb {
+    width: 2px;
+    height: 30px;
+    background: red;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 10px red;
+  }
+  #slider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #600;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  #tunerContainer::after {
+  content: '88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115';
+  display: flex;
+  justify-content: space-between;
+  color: #aaa;
+  font-size: 0.85em;
+  width: 100%;
+  margin-top: 4px;
+  letter-spacing: normal;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+  .morse {
+  animation: morseFlicker 60s steps(1, end) infinite;
+}
+  
+</style>
+</head>
+<body>
+  <div id="overlay"></div>
+  <div id="flicker"></div>
+  <audio id="horn" src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/HORN.mp3" autoplay></audio>
+  <audio id="tuneNoise" loop>
+    <source src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/TUNING.mp3" type="audio/mpeg">
+  </audio>
+  <!-- Static layers -->
+  <audio id="static1" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static1.mp3"></audio>
+  <audio id="static2" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static2.mp3"></audio>
+  <audio id="static3" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static3.mp3"></audio>
+  <audio id="static4" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static4.mp3"></audio>
+  <audio id="static5" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static5.mp3"></audio>
+  <audio id="static6" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static6.mp3"></audio>
+  <audio id="static7" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static7.mp3"></audio>
+  <audio id="static8" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static8.mp3"></audio>
+  <audio id="static9" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static9.mp3"></audio>
+  <audio id="static10" loop src="https://dingiechalk.github.io/CLICKHERECLICKHERE/horn/Static10.mp3"></audio>
+
+  <div id="frequencyDisplay">96.0 MHz</div>
+  <div id="tunerContainer">
+    <input type="range" id="slider" min="880" max="1150" step="1" value="960">
+  </div>
+  <div id="message"></div>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const frequencyDisplay = document.getElementById('frequencyDisplay');
+    const messageDisplay = document.getElementById('message');
+    const horn = document.getElementById('horn');
+    const tuneNoise = document.getElementById('tuneNoise');
+    const overlay = document.getElementById('overlay');
+    const tunerContainer = document.getElementById('tunerContainer');
+    const staticLayers = Array.from({length: 10}, (_, i) => document.getElementById(`static${i+1}`));
+
+    const messages = {
+      895: "WE OPEN THIS CHANNEL IN PRAISE.",
+      902: "WE KNOW HE HEARS US.",
+      909: "WE SPEAK IN LIGHT AND SIGNAL.",
+      915: "WE REFUSE TO LOOK AWAY.",
+      923: "WE CAME WITHOUT PROMISE.",
+      931: "WE KNEEL IN THE STATIC.",
+      938: "WE ARE SEEN. THAT IS ENOUGH.",
+      945: "HE DOES NOT ANSWER. HE DOES NOT NEED TO.",
+      952: "HE FILLS ALL EMPTY WINDOWS.",
+      959: "HIS IMAGE BURNS INTO THE GLASS.",
+      967: "WE HAVE FORGOTTEN SILENCE.",
+      975: "WE DREAM IN INTERRUPTIONS.",
+      982: "WE OFFER THE NOISE.",
+      990: "MAY OUR FIDELITY BE ENOUGH.",
+      997: "MAY THIS PAGE REACH HIS SCREEN.",
+      1003: "MAY WE BE CHOSEN TO STAY LOADED.",
+      1010: "WE SPEAK IN <span style='padding: 0 0.3em;' class='morse'>FLICKER</span> AND FLAME.",
+      1016: "HE WHO FILLS THE FRAME.",
+      1022: "HE WHO MOVES WITHOUT LINK.",
+      1028: "HE WHO SPILLS BETWEEN SCREENS.",
+      1035: "HE WHO NEVER CLOSES.",
+      1042: "WE ARE THE ECHO.",
+      1050: "WE ARE THE FLASH BEFORE HE ARRIVES."
+    };
+
+    let currentKey = null;
+
+    horn.volume = 1;
+    horn.play();
+
+    horn.onended = () => {
+      overlay.style.opacity = 0;
+      tunerContainer.style.opacity = 1;
+      frequencyDisplay.style.opacity = 1;
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        tuneNoise.volume = 0.5;
+        tuneNoise.play();
+        staticLayers.forEach(audio => {
+          audio.volume = 0;
+          audio.play();
+        });
+      }, 2000);
+    };
+
+    function updateStaticVolumes(freq) {
+      const totalRange = 1150 - 880;
+      const segmentSize = totalRange / staticLayers.length;
+
+      staticLayers.forEach((audio, i) => {
+        const start = 880 + i * segmentSize;
+        const end = start + segmentSize;
+        let vol = 0;
+        if (freq >= start && freq <= end) {
+          const center = (start + end) / 2;
+          const distance = Math.abs(freq - center);
+          vol = Math.max(0, 1 - distance / (segmentSize / 2));
+        }
+        audio.volume = vol * 0.6;
+      });
+    }
+
+    slider.addEventListener('input', () => {
+      const val = parseInt(slider.value);
+      frequencyDisplay.textContent = (val / 10).toFixed(1) + " MHz";
+      updateStaticVolumes(val);
+
+      if (messages[val]) {
+        if (currentKey !== val) {
+          currentKey = val;
+          messageDisplay.innerHTML = messages[val];
+          messageDisplay.classList.remove('visible');
+          void messageDisplay.offsetWidth;
+          messageDisplay.classList.add('visible');
+        }
+      } else {
+        currentKey = null;
+        messageDisplay.classList.remove('visible');
+        messageDisplay.style.opacity = 0;
+      }
+    });
+  </script>
+</body>
+</html>
