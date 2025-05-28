@@ -56,17 +56,33 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
     }
+      .code-glitch {
+      text-decoration: underline;
+      display: inline-block;
+      transition: transform 0.2s, text-shadow 0.2s;
+    }
+
+    .code-glitch:hover {
+      animation: pulse-glitch 0.4s infinite alternate;
+      text-shadow: 1px 0 red, -1px 0 blue;
+      transform: scale(1.05);
+    }
+
+    @keyframes pulse-glitch {
+      0% { transform: scale(1.05) translateX(-1px); }
+      100% { transform: scale(1.05) translateX(1px); }
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
 </head>
 <body>
   <h1>404</h1>
   <div class="gif-container">
-    <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/404/ezgif-4ca5c311ba4e27.gif" alt="404 Graphic" width="200">
+    <img src="https://raw.githubusercontent.com/DingIeChalk/CLICKHERECLICKHERE/refs/heads/main/ezgif-4ca5c311ba4e27.gif" alt="404 Graphic" width="200">
     <div class="wall-line"></div>
   </div>
   <div class="message">[OOPS! THIS PAGE DOESN'T EXIST YET.]</div>
-  <div class="glitch-box" style="animation: none;">[NOTHING TO BUY HERE. <a href="/" style="color:red; text-decoration:none;">BACK TO SHOPPING!</a>]</div>
+  
 <script>
   if (location.pathname !== "/404.html") {
     fetch("/404.html")
@@ -78,5 +94,8 @@
       });
   }
 </script>
+  <div class="message">[SEEING AS YOU ARE HERE, HERE'S A DISCOUNT CODE!]</div>
+  <div class="message">[<span class="code-glitch">OOPS20</span>]</div>
+  <div class="glitch-box" style="animation: none;">[ANYWAY, NOTHING TO BUY HERE. <a href="https://huxmark.com" style="color:red; text-decoration:none;">BACK TO SHOPPING!</a>]</div>
 </body>
 </html>
