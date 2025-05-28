@@ -69,7 +69,13 @@
   <div class="glitch-box" style="animation: none;">[NOTHING TO BUY HERE. <a href="/" style="color:red; text-decoration:none;">BACK TO SHOPPING!</a>]</div>
 <script>
   if (location.pathname !== "/404.html") {
-    history.replaceState(null, "", "/404.html");
+    fetch("/404.html")
+      .then(response => response.text())
+      .then(html => {
+        document.open();
+        document.write(html);
+        document.close();
+      });
   }
 </script>
 </body>
